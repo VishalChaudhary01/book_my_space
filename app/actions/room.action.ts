@@ -3,7 +3,6 @@
 import { authOptions } from "@/lib/auth/authOptions";
 import cloudinary from "@/lib/cloudinary";
 import prisma from "@/lib/database";
-import { handleError } from "@/lib/utils";
 import { addRoomSchema, AddRoomSchemaType, bookRoomSchema, BookRoomSchemaType, updateRoomSchema, UpdateRoomSchemaType } from "@/types/room";
 import { getServerSession } from "next-auth";
 
@@ -16,9 +15,8 @@ export async function uploadImage(image: any) {
                folder: image.asset_folder
           });
           return { success: true, publicId: uploadedImage.public_id }
-     } catch (error) {
-          handleError(error);
-          return { success: false }
+     } catch (error: any) {
+          return { error: error.message || "Something went wrong" }
      }
 }
 
@@ -36,9 +34,8 @@ export async function addRoom(formData: AddRoomSchemaType) {
                }
           });
           return { success: true }
-     } catch (error) {
-          handleError(error);
-          return { success: false}
+     } catch (error: any) {
+          return { error: error.message || "Something went wrong" }
      }
 }
 
@@ -50,6 +47,10 @@ export async function bookRoom(formData: BookRoomSchemaType) {
 
           const { data, error } = bookRoomSchema.safeParse(formData);
           if (error) throw new Error(error.issues[0].message || "Invalid input");
+
+          if (data.checkInTime.getTime() === data.checkOutTime.getTime()) {
+               throw new Error("Checkin and checkout time and date are same, Please select a valid time interval");
+          }
 
           const room = await prisma.room.findFirst({
                where: { id: data.roomId }
@@ -83,9 +84,9 @@ export async function bookRoom(formData: BookRoomSchemaType) {
                }
           });
           return { success: true };
-     } catch (error) {
-          handleError(error);
-          return { success: false };
+     } catch (error: any) {
+          console.error(error);
+          return { error: error.message || "Something went wrong" };
      }
 }
 
@@ -93,9 +94,9 @@ export async function fetchAllRooms() {
      try {
           const rooms = (await prisma.room.findMany({})).reverse();
           return { success: true, rooms };
-     } catch (error) {
-          handleError(error);
-          return { success: false };
+     } catch (error: any) {
+          console.error(error);
+          return { error: error.message || "Something went wrong" };
      }
 }
 
@@ -107,9 +108,9 @@ export async function fetchRoomById(roomId: string) {
                }
           });
           return { success: true, room }
-     } catch (error) {
-          handleError(error);
-          return { success: false }
+     } catch (error: any) {
+          console.error(error);
+          return { error: error.message || "Something went wrong" };
      }
 }
 
@@ -124,9 +125,9 @@ export async function fetchRoomByOwner() {
                }
           })).reverse();
           return { success: true, rooms }
-     } catch (error) {
-          handleError(error);
-          return { success: false }
+     } catch (error: any) {
+          console.error(error);
+          return { error: error.message || "Something went wrong" };
      }
 }
 
@@ -157,9 +158,9 @@ export async function updateRoom(formData: UpdateRoomSchemaType, roomId: string)
                }
           });
           return { success: true }
-     } catch (error) {
-          handleError(error);
-          return { success: false }
+     } catch (error: any) {
+          console.error(error);
+          return { error: error.message || "Something went wrong" };
      }
 }
 
@@ -182,8 +183,8 @@ export async function deleteRoom(roomId: string) {
                }
           });
           return { success: true }
-     } catch (error) {
-          handleError(error);
-          return  { success: false }
+     } catch (error: any) {
+          console.error(error);
+          return { error: error.message || "Something went wrong" };
      }
 }

@@ -1,7 +1,6 @@
 "use server";
 import prisma from "@/lib/database";
 import bcrypt from "bcrypt";
-import { handleError } from "@/lib/utils";
 import { signupSchema, SignupSchemaType } from "@/types/user";
 
 export async function signup({ name, email, password }: SignupSchemaType) {
@@ -21,8 +20,8 @@ export async function signup({ name, email, password }: SignupSchemaType) {
                }
           });
           return { success: true }
-     } catch (error) {
-          handleError(error);
-          return { success: false }
+     } catch (error: any) {
+          console.error(error);
+          return { error: error.message || "Something went wrong" }
      }
 }
