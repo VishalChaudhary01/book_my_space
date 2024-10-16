@@ -27,6 +27,7 @@ model Room {
   city         String
   state        String
   pin          Int
+  description String?
   owner        User?        @relation(fields: [ownerId], references: [id])
   ownerId      String?
   bookedRoom   BookedRoom[]

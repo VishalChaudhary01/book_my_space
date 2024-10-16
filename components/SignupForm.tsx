@@ -87,7 +87,7 @@ export function SignupForm() {
                          <Button
                               type="submit"
                               disabled={form.formState.isSubmitting}
-                              className="w-full bg-purple-1 hover:bg-purple-1 text-base font-semibold"
+                              className="w-full bg-purple-1 hover:bg-purple-3"
                          >
                               {form.formState.isSubmitting ? "Please wait..." : "Sign Up"}
                          </Button>

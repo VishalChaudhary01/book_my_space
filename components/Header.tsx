@@ -11,7 +11,7 @@ export function Header() {
      const session = useSession();
 
      return (
-          <div className="sticky top-4 flex-between rounded-xl py-4 px-4 lg:px-8 m-4 lg:mx-8 bg-purple-1 text-white shadow-sm">
+          <div className="sticky top-4 flex-between rounded-xl py-4 px-4 mb-4 lg:px-8 bg-purple-1 text-white shadow-sm">
                <Link href="/" className="text-[20px] lg:text-[25px] font-bold">Room Bookit</Link>
                <div className="hidden md:flex-center lg:flex-center text-base lg:font-medium">
                     <Link href="/rooms" className="ghost-link">All Rooms</Link>
@@ -28,12 +28,12 @@ export function Header() {
                          <Button onClick={() => {
                               toast.success("Logout successful");
                               signOut();
-                         }} className="hidden md:block lg:block bg-white hover:bg-purple-2 text-purple-1 font-semibold text-base">Logout</Button>
+                         }} className="hidden md:block lg:block bg-white hover:bg-purple-2 text-purple-1">Logout</Button>
                     </div>
                ) : (
                     <div className="flex-center">
-                         <Button onClick={() => router.push("/signin")} className="bg-white hover:bg-purple-2 text-purple-1 font-semibold text-base">Signin</Button>
-                         <Button onClick={() => router.push("/signup")} className="hidden md:block lg:block bg-white hover:bg-purple-2 text-purple-1 font-semibold text-base">Signup</Button>
+                         <Button onClick={() => router.push("/signin")} className="bg-white hover:bg-purple-2 text-purple-1">Signin</Button>
+                         <Button onClick={() => router.push("/signup")} className="hidden md:block lg:block bg-white hover:bg-purple-2 text-purple-1">Signup</Button>
                     </div>
                )}
           </div>

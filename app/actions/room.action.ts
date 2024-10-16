@@ -1,10 +1,26 @@
 "use server";
 
 import { authOptions } from "@/lib/auth/authOptions";
+import cloudinary from "@/lib/cloudinary";
 import prisma from "@/lib/database";
 import { handleError } from "@/lib/utils";
 import { addRoomSchema, AddRoomSchemaType, bookRoomSchema, BookRoomSchemaType, updateRoomSchema, UpdateRoomSchemaType } from "@/types/room";
 import { getServerSession } from "next-auth";
+
+export async function uploadImage(image: any) {
+     try {
+          const sizeInMB = image.size / 1024*1024;
+          if (sizeInMB > 2) throw new Error("Image size must be smaller then 2MB")
+          const uploadedImage = await cloudinary.uploader.upload(image.secure_url,{
+               public_id: image.public_id,
+               folder: image.asset_folder
+          });
+          return { success: true, publicId: uploadedImage.public_id }
+     } catch (error) {
+          handleError(error);
+          return { success: false }
+     }
+}
 
 export async function addRoom(formData: AddRoomSchemaType) {
      const session = await getServerSession(authOptions);
@@ -75,7 +91,7 @@ export async function bookRoom(formData: BookRoomSchemaType) {
 
 export async function fetchAllRooms() {
      try {
-          const rooms = await prisma.room.findMany({});
+          const rooms = (await prisma.room.findMany({})).reverse();
           return { success: true, rooms };
      } catch (error) {
           handleError(error);
@@ -85,7 +101,7 @@ export async function fetchAllRooms() {
 
 export async function fetchRoomById(roomId: string) {
      try {
-          const room = await prisma.room.findMany({
+          const room = await prisma.room.findFirst({
                where: {
                     id: roomId,
                }
@@ -102,11 +118,11 @@ export async function fetchRoomByOwner() {
      try {
           const userId = session?.user?.id;
           if (!userId) throw new Error("Unauthorized user, Please login first!");
-          const rooms = await prisma.room.findMany({
+          const rooms = (await prisma.room.findMany({
                where: {
                     ownerId: userId
                }
-          })
+          })).reverse();
           return { success: true, rooms }
      } catch (error) {
           handleError(error);

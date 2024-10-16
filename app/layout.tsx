@@ -33,10 +33,12 @@ export default function RootLayout({
       >
         <Providers>
           <Toaster richColors />
-          <div>
-            <Header />
+          <div className="m-4 lg:mx-8">
+            <div>
+              <Header />
+            </div>
+            {children}
           </div>
-          {children}
         </Providers>
       </body>
     </html>
