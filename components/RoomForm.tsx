@@ -11,7 +11,7 @@ import { useState } from "react";
 import { MediaUploader } from "@/components/MediaUploader";
 import { addRoom, updateRoom, uploadImage } from "@/app/actions/room.action";
 import { toast } from "sonner";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface IRoom {
      id: string;
@@ -64,7 +64,7 @@ export function RoomForm({ room, roomId }: RoomFormProps) {
                          const response = await addRoom({ ...data, image: uploadedImage.publicId });
                          if (response.success) {
                               toast.success("Room added successfully");
-                              router.push("/");
+                              router.push("/rooms/rented");
                          } else {
                               console.error(response);
                               toast.error("Error while adding room");
@@ -77,7 +77,7 @@ export function RoomForm({ room, roomId }: RoomFormProps) {
                     const response = await updateRoom({ ...data }, roomId);
                     if (response.success) {
                          toast.success("Room updated successfully");
-                         router.push("/");
+                         router.push("/rooms/rented");
                     } else {
                          console.error(response);
                          toast.error("Error while updating room");

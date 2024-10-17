@@ -35,6 +35,7 @@ export function BookingForm({ roomId, name, image, price }: BookingFormProps) {
           if (response.success) {
                toast.success("Room booking successful");
           } else {
+               console.error(response);
                toast.error(response.error || "Something went wrong");
           }
      }
