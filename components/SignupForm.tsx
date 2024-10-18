@@ -24,20 +24,17 @@ export function SignupForm() {
      });
 
      async function signupHandler(data: SignupSchemaType) {
-          try {
-               const registerUser = await signup(data);
-               if (registerUser.success) {
-                    const response = await signIn("credentials", { ...data, redirect: false });
-                    if (!response?.ok) {
-                         return toast.error(response?.error || "Something went wrong, Please try again!");
-                    } else {
-                         toast.success("Signup successful");
-                         router.push("/");
-                    }
+          const registerUser = await signup(data);
+          if (registerUser.success) {
+               const response = await signIn("credentials", { ...data, redirect: false });
+               if (!response?.ok) {
+                    return toast.error(response?.error || "Something went wrong, Please try again!");
+               } else {
+                    toast.success("Signup successful");
+                    router.push("/");
                }
-          } catch (error: any) {
-               console.error(error);
-               return toast.error(error.message || "Internal server error");
+          } else {
+               toast.error(registerUser.error || "Error while signup user");
           }
      }
 

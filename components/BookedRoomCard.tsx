@@ -20,7 +20,7 @@ export function BookedRoomCard({ room, handleCancel }: { room: IBookedRoom, hand
                          <Button onClick={() => {
                               setCancelId(room.id);
                               setOpenDialog(true);
-                         }} variant="ghost">
+                         }} className="bg-purple-1 hover:bg-purple-3">
                               Cancel
                          </Button>
                     </div>
@@ -35,7 +35,7 @@ export function BookedRoomCard({ room, handleCancel }: { room: IBookedRoom, hand
                     <Button onClick={() => {
                          setCancelId(room.id);
                          setOpenDialog(true);
-                    }} variant="ghost">
+                    }} className="bg-purple-1 hover:bg-purple-3">
                          Cancel
                     </Button>
                </div>
