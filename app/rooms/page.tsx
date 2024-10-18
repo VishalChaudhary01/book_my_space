@@ -18,24 +18,18 @@ export default async function RoomLists() {
                </div>
                {rooms?.length ? (
                     rooms.map((room) => (
-                         <Link href={`/rooms/${room.id}`} key={room.id} className="grid grid-cols-2 lg:grid-cols-5 md:grid-cols-3 grid-flow-row cursor-pointer border border-purple-2 rounded-md p-2">
+                         <Link href={`/rooms/${room.id}`} key={room.id} className="flex gap-2 lg:gap-16 cursor-pointer border rounded-md p-4">
                               <div>
                                    <RoomImage src={room.image} />
                               </div>
-                              <div className="flex flex-col text-base font-medium lg:font-semibold md:font-semibold text-gray-700 px-4">
-                                   <span>{room.name}</span>
-                                   <span>Price: {room.price} $/hour</span>
-                                   <span>Size: {room.lengthInFeet} &times; {room.widthInFeet} square feet</span>
-                                   <span className="lg:hidden md:hidden">Address: {room.address} {room.city}</span>
-                              </div>
-                              <div className="hidden lg:flex md:flex flex-col text-base font-semibold text-gray-700 px-4">
-                                   <span>{room.address}</span>
-                                   <span>{room.city}</span>
-                                   <span>{room.state}</span>
-                                   <span>{room.pin}</span>
-                              </div>
-                              <div className="hidden lg:block col-span-2 text-base font-semibold text-gray-700 px-4">
-                                   {room.description}
+                              <div className="flex flex-col w-max justify-between">
+                                   <div className="flex flex-col text-gray-700">
+                                        <span className="lg:text-xl text-lg font-semibold">{room.name}</span>
+                                        <span><span className="text-base font-medium">Price: </span>{room.price} $/hour</span>
+                                        <span><span className="text-base font-medium">Size: </span>{room.lengthInFeet}&times;{room.widthInFeet} square feet</span>
+                                        <span><span className="text-base font-medium">Address: </span>{room.address} {room.city}</span>
+                                   </div>
+                                   <Button className="bg-purple-1 hover:bg-purple-3">View Details</Button>
                               </div>
                          </Link>
                     ))

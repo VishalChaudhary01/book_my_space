@@ -12,3 +12,14 @@ declare interface IRoom {
      description: string | null;
      ownerId: string | null;
 }
+
+declare interface IBookedRoom {
+     id: string;
+     userId: string;
+     roomId: string | null;
+     name: string;
+     image: string;
+     price: number;
+     checkInTime: Date;
+     checkOutTime: Date;
+}

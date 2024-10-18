@@ -30,7 +30,14 @@ export function BookingForm({ roomId, name, image, price }: BookingFormProps) {
           defaultValues: initialValue,
      })
 
-     async function bookingHandler(data: BookRoomSchemaType) { 
+     async function bookingHandler(data: BookRoomSchemaType) {
+          if (data.checkInTime.getTime() < new Date().getTime() || data.checkOutTime.getTime() < data.checkInTime.getTime()) {
+               alert("Please select a valid date");
+               return;
+          }
+          // const totalRentTime = (data.checkOutTime.getTime() - data.checkInTime.getTime()) / (1000 * 60 * 60);
+          // const totalAmount = (totalRentTime * price);
+          // console.log(totalAmount, totalRentTime)
           const response = await bookRoom({ ...data, roomId, name, image, price });
           if (response.success) {
                toast.success("Room booking successful");
@@ -42,7 +49,7 @@ export function BookingForm({ roomId, name, image, price }: BookingFormProps) {
 
      return (
           <Form {...form}>
-               <form onSubmit={form.handleSubmit(bookingHandler)} className="space-y-6 my-4 border-2 border-purple-2 rounded-md shadow-sm p-4 lg:px-8">
+               <form onSubmit={form.handleSubmit(bookingHandler)} className="space-y-6 my-4 border-2 border-purple-2 min-w-96 rounded-md shadow-sm p-4 lg:px-8">
                     <FormField
                          control={form.control}
                          name="checkInTime"

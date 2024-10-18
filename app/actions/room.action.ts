@@ -90,6 +90,38 @@ export async function bookRoom(formData: BookRoomSchemaType) {
      }
 }
 
+export async function cancelBooking(bookingId: string) {
+     const session = await getServerSession(authOptions);
+     try {
+          const userId = session?.user?.id;
+          if (!userId) throw new Error("Unauthorized user, Please login first!");
+          await prisma.bookedRoom.delete({
+               where: {
+                    id: bookingId
+               }
+          });
+          return { success: true }
+     } catch (error: any) {
+          console.error(error);
+          return { error: error.message || "Something went wrong" };
+     }
+}
+
+export async function fetchAllBookedRooms() {
+     const session = await getServerSession(authOptions);
+     try {
+          const userId = session?.user?.id;
+          if (!userId) throw new Error("Unauthorized user, Please login first!");
+          const bookedRooms = (await prisma.bookedRoom.findMany({
+               where: { userId }
+          })).reverse();
+          return { success: true, bookedRooms };
+     } catch (error: any) {
+          console.error(error);
+          return { error: error.message || "Something went wrong" };
+     }
+}
+
 export async function fetchAllRooms() {
      try {
           const rooms = (await prisma.room.findMany({})).reverse();
