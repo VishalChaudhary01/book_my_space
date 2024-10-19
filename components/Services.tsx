@@ -7,16 +7,21 @@ import { useRouter } from "next/navigation";
 export function Services() {
   const router = useRouter();
   return (
-    <div className="flex flex-col items-center gap-12">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-4">
-        {services.map((service) => (
-          <ServiceCard
-            key={service.header}
-            src={service.src}
-            header={service.header}
-            desc={service.desc}
-          />
-        ))}
+    <div className="flex flex-col items-center gap-8">
+      <div>
+        <h2 className="flex-center text-3xl font-bold text-gray-700 pb-4">
+          Our unique and affordable office solutions
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-4">
+          {services.map((service) => (
+            <ServiceCard
+              key={service.header}
+              src={service.src}
+              header={service.header}
+              desc={service.desc}
+            />
+          ))}
+        </div>
       </div>
       <div className="flex flex-col lg:flex-row md:flex-row lg:items-start items-center gap-8">
         <Image src="/images/img.jpg" width={400} height={500} alt="image" />

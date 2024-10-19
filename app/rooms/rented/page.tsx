@@ -1,62 +1,32 @@
-"use client";
-import { deleteRoom, fetchRoomByOwner } from "@/app/actions/room.action";
+import { fetchRoomByOwner } from "@/app/actions/room.action";
+import { AddNewRoomButton } from "@/components/AddNewRoomButton";
 import { RentedRoomCard } from "@/components/RentedRoomCard";
-import { Button } from "@/components/ui/button";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { authOptions } from "@/lib/auth/authOptions";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 import { toast } from "sonner";
 
-export default function RentedRooms() {
-     const session = useSession();
-     const router = useRouter();
-     const [roomList, setRoomList] = useState<IRoom[]>([]);
-     const [loading, setLoading] = useState(true);
-     
-     useEffect(() => {
-          if (!session?.data?.user) {
-               router.push("/signin");
-               return;
-          }
-          const getAllRooms = async () => {
-               const response = await fetchRoomByOwner();
-               if (response.success) {
-                    setRoomList(response.rooms);
-               } else {
-                    console.error(response);
-                    return toast.error(response.error || "Failed to fetch rooms");
-               }
-               setLoading(false);
-          }
-          getAllRooms();
-     }, []);
+export default async function RentedRooms() {
+     const session = await getServerSession(authOptions);
+     if (!session?.user) redirect("/signin");
 
-     async function handleDelete(roomId: string) {
-          const response = await deleteRoom(roomId);
-          if (response.success) {
-               toast.success("Room deleted successfully");
-               setRoomList(roomList => roomList.filter(room => room.id !== roomId));
-               router.refresh();
-          } else {
-               console.error(response);
-               toast.error(response.error || "Soemthing went wrong");
-          }
-          router.refresh();
+     const { rooms, error } = await fetchRoomByOwner();
+     if (error) {
+          console.error(error);
+          return toast.error(error || "Failed to fetch rooms");
      }
-
-     if (loading) return <div className="flex-center">Loading....</div>
 
      return (
           <div className="flex flex-col gap-4 relative">
-               <Button onClick={() => router.push('/rooms/add')} className="absolute right-0 top-4 bg-purple-1 hover:bg-purple-3">Add New Room</Button>
+               <AddNewRoomButton />
                <div className="flex lg:justify-center md:justify-center my-4 lg:text-2xl text-xl font-bold text-gray-700">
                     Your all Rented Room are here
                </div>
                <div className="flex flex-col items-center gap-4">
                     <div className="flex-center flex-col w-full">
-                         {roomList?.length ? (
-                              roomList.map((room) => (
-                                   <RentedRoomCard key={room.id} room={room} handleDelete={handleDelete} />
+                         {rooms?.length ? (
+                              rooms.map((room) => (
+                                   <RentedRoomCard key={room.id} room={room} />
                               ))
                          ) : (
                               <div className="text-xl font-bold text-red-700">

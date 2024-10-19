@@ -1,5 +1,4 @@
 "use server";
-
 import { authOptions } from "@/lib/auth/authOptions";
 import cloudinary from "@/lib/cloudinary";
 import prisma from "@/lib/database";
@@ -20,6 +19,7 @@ export async function uploadImage(image: any) {
      }
 }
 
+// Add room for rent
 export async function addRoom(formData: AddRoomSchemaType) {
      const session = await getServerSession(authOptions);
      try {
@@ -39,6 +39,7 @@ export async function addRoom(formData: AddRoomSchemaType) {
      }
 }
 
+// Book room -> User
 export async function bookRoom(formData: BookRoomSchemaType) {
      const session = await getServerSession(authOptions);
      try {
@@ -48,8 +49,8 @@ export async function bookRoom(formData: BookRoomSchemaType) {
           const { data, error } = bookRoomSchema.safeParse(formData);
           if (error) throw new Error(error.issues[0].message || "Invalid input");
 
-          if (data.checkInTime.getTime() === data.checkOutTime.getTime()) {
-               throw new Error("Checkin and checkout time and date are same, Please select a valid time interval");
+          if (data.checkInTime.getTime() < new Date().getTime() || data.checkOutTime.getTime() <= data.checkInTime.getTime()) {
+               throw new Error("Select a valid time interval");
           }
 
           const room = await prisma.room.findFirst({
@@ -81,8 +82,17 @@ export async function bookRoom(formData: BookRoomSchemaType) {
                data: {
                     ...data,
                     userId: userId,
+                    ownerId: room.ownerId,
                }
           });
+          await prisma.room.update({
+               where: {
+                    id:data.roomId,
+               },
+               data: {
+                    totalBooking: room.totalBooking + 1,
+               }
+          })
           return { success: true };
      } catch (error: any) {
           console.error(error);
@@ -90,14 +100,48 @@ export async function bookRoom(formData: BookRoomSchemaType) {
      }
 }
 
-export async function cancelBooking(bookingId: string) {
+// Fetch all bookings of a Rented Room -> Room owner
+export async function fetchAllBookingByRoom(roomId: string) {
      const session = await getServerSession(authOptions);
      try {
           const userId = session?.user?.id;
           if (!userId) throw new Error("Unauthorized user, Please login first!");
-          await prisma.bookedRoom.delete({
+          const bookingList = await prisma.bookedRoom.findMany({
                where: {
-                    id: bookingId
+                    roomId,
+                    ownerId: userId,
+               },
+               orderBy: {
+                    createdAt: 'desc',
+               },
+               include: {
+                    user: {
+                         select: {
+                              name: true,
+                         }
+                    }
+               }
+          });
+          return { success: true, bookingList };
+     } catch (error: any) {
+          console.error(error);
+          return { error: error.message || "Something went wrong" };
+     }
+}
+
+// Room Owner Update the status of bookings (Approved, Success, Pending) -> Room owner
+export async function updateStatus({ bookingId, status }: UpdateStatusProps) {
+     const session = await getServerSession(authOptions);
+     try {
+          const userId = session?.user?.id;
+          if (!userId) throw new Error("Unauthorized user, Please login first!");
+          await prisma.bookedRoom.update({
+               where: {
+                    id: bookingId,
+                    ownerId: userId,
+               },
+               data: {
+                    status,
                }
           });
           return { success: true }
@@ -107,14 +151,51 @@ export async function cancelBooking(bookingId: string) {
      }
 }
 
+// Cancel Booking by user => User
+export async function cancelBooking(bookingId: string) {
+     const session = await getServerSession(authOptions);
+     try {
+          const userId = session?.user?.id;
+          if (!userId) throw new Error("Unauthorized user, Please login first!");
+          await prisma.bookedRoom.update({
+               where: {
+                    id: bookingId,
+                    userId: userId,
+               },
+               data: {
+                    status: "Cancel",
+                    checkInTime: new Date,
+                    checkOutTime: new Date(),
+               }
+          });
+          return { success: true }
+     } catch (error: any) {
+          console.error(error);
+          return { error: error.message || "Something went wrong" };
+     }
+}
+
+// Fetch all booked rooms by user
 export async function fetchAllBookedRooms() {
      const session = await getServerSession(authOptions);
      try {
           const userId = session?.user?.id;
           if (!userId) throw new Error("Unauthorized user, Please login first!");
-          const bookedRooms = (await prisma.bookedRoom.findMany({
-               where: { userId }
-          })).reverse();
+          const bookedRooms = await prisma.bookedRoom.findMany({
+               where: { 
+                    userId 
+               },
+               include: {
+                    user: {
+                         select: {
+                              name: true
+                         }
+                    }
+               },
+               orderBy: {
+                    createdAt: 'desc',
+               },
+          });
           return { success: true, bookedRooms };
      } catch (error: any) {
           console.error(error);
@@ -122,6 +203,7 @@ export async function fetchAllBookedRooms() {
      }
 }
 
+// Fetch all rooms
 export async function fetchAllRooms() {
      try {
           const rooms = (await prisma.room.findMany({})).reverse();
@@ -132,6 +214,7 @@ export async function fetchAllRooms() {
      }
 }
 
+// Fetch room by room_id
 export async function fetchRoomById(roomId: string) {
      try {
           const room = await prisma.room.findFirst({
@@ -146,6 +229,7 @@ export async function fetchRoomById(roomId: string) {
      }
 }
 
+// Fetch all rented rooms of user -> Room owner
 export async function fetchRoomByOwner() {
      const session = await getServerSession(authOptions);
      try {
@@ -163,6 +247,7 @@ export async function fetchRoomByOwner() {
      }
 }
 
+// Update room -> Room owner
 export async function updateRoom(formData: UpdateRoomSchemaType, roomId: string) {
      const session = await getServerSession(authOptions);
      try {
@@ -196,6 +281,7 @@ export async function updateRoom(formData: UpdateRoomSchemaType, roomId: string)
      }
 }
 
+// Delete room -> Room owner
 export async function deleteRoom(roomId: string) {
      const session = await getServerSession(authOptions);
      try {

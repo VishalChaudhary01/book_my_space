@@ -1,5 +1,4 @@
 "use client";
-
 import { CldImage } from "next-cloudinary";
 
 interface RoomImageProps {

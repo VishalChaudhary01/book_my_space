@@ -5,54 +5,44 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { ConfirmationDialog } from "./ConfirmationDialog";
+import { deleteRoom } from "@/app/actions/room.action";
+import { toast } from "sonner";
 
-export function RentedRoomCard({ room, handleDelete }: { room: IRoom, handleDelete: (id: string) => void }) {
+export function RentedRoomCard({ room }: { room: IRoom }) {
      const router = useRouter();
      const [openDialog, setOpenDialog] = useState(false);
-     const [deleteId, setDeleteId] = useState("");
+
+     async function handleDelete(roomId: string) {
+          const response = await deleteRoom(roomId);
+          if (response.success) {
+               toast.success("Room deleted successfully");
+               router.refresh();
+          } else {
+               console.error(response);
+               toast.error(response.error || "Soemthing went wrong");
+          }
+     }
      
      return (
-          <div className="grid grid-cols-2 lg:grid-cols-4 md:grid-cols-4 grid-flow-row w-full border border-purple-2 rounded-md p-2">
-               <div className="flex flex-col gap-2">
-                    <Link href={`/rooms/${room.id}`} >
-                         <RoomImage src={room.image} w={150} h={150}/>
+          <div className="flex gap-4 border w-full lg:w-2/3 h-40 border-purple-2 shadow-md rounded-md p-2">
+               <RoomImage src={room.image} w={200} h={200} />                    
+               <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between lg:w-3/4 text-base text-gray-700 px-4">
+                    <Link href={`/rooms/${room.id}`} className="flex flex-col cursor-pointer">
+                         <span className="font-semibold">{room.name}</span>
+                         <span><span className="font-semibold">Price: </span>{room.price} $/hour</span>
+                         <span><span className="font-semibold">Size: </span>{room.lengthInFeet}&times;{room.widthInFeet} square feet</span>
                     </Link>
-                    <div className="lg:hidden md:hidden flex items-center gap-4 px-4">
-                         <Button onClick={() => router.push(`/rooms/${room.id}/update`)} variant="ghost" size="icon"><Image src="/icons/update.svg" width={28} height={28} alt="update" /></Button>
+                    <div className="flex items-center py-4">
+                         <Button onClick={() => router.push(`/rooms/rented/${room.id}`)} variant="ghost">Totel Booking: {room.totalBooking}</Button>
+                         <Button onClick={() => router.push(`/rooms/${room.id}/update`)} variant="ghost" size="icon"><Image src="/icons/update.svg" width={24} height={24} alt="update" /></Button>
                          <Button onClick={() => {
-                              setDeleteId(room.id);
-                              setOpenDialog(true)
-                         }} variant="ghost" size="icon"><Image src="/icons/remove.svg" width={28} height={28} alt="remove" /></Button>
+                              setOpenDialog(true);
+                         }} variant="ghost" size="icon"><Image src="/icons/remove.svg" width={24} height={24} alt="remove" /></Button>
                     </div>
                </div>
-               <div className="lg:col-span-2 md:col-span-2 flex flex-col text-base text-gray-700 px-4">
-                    <span className="font-semibold">{room.name}</span>
-                    <span><span className="font-semibold">Price: </span>{room.price} $/hour</span>
-                    <span><span className="font-semibold">Size: </span>{room.lengthInFeet} &times; {room.widthInFeet} square feet</span>
-                    <span className=""><span className="font-semibold">Address: </span><span>{`${room.address}, ${room.city}, ${room.state}, ${room.pin}`}</span></span>
-               </div>
-               <div className="hidden lg:flex md:flex items-center gap-4 px-4">
-                    <Button onClick={() => router.push(`/rooms/${room.id}/update`)} variant="ghost" size="icon"><Image src="/icons/update.svg" width={28} height={28} alt="update" /></Button>
-                    <Button onClick={() => {
-                         setDeleteId(room.id);
-                         setOpenDialog(true);
-                    }} variant="ghost" size="icon"><Image src="/icons/remove.svg" width={28} height={28} alt="remove" /></Button>
-               </div>
-               {(openDialog && deleteId) && (
-                    <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-                    <DialogContent className="sm:max-w-[425px] flex-center flex-col">
-                      <DialogHeader>
-                        <DialogTitle className="text-xl font-bold text-gray-600">Are you sure want to delete this room</DialogTitle>
-                      </DialogHeader>
-                      <DialogFooter>
-                        <Button onClick={() => {
-                         handleDelete(deleteId);
-                         setOpenDialog(false);
-                        }} type="submit" className="bg-purple-1 hover:bg-purple-3">Delete</Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
+               {openDialog && (
+                    <ConfirmationDialog id={room.id} handleClick={handleDelete} open={openDialog} setOpen={setOpenDialog} header="Are you sure want to delete this room" buttonName="Yes" />
                )}
           </div>
      )

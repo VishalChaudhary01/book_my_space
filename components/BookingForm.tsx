@@ -1,5 +1,4 @@
 "use client";
-
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,6 +8,7 @@ import { Input } from "./ui/input";
 import { toast } from "sonner";
 import { bookRoom } from "@/app/actions/room.action";
 import { formatToDateTimeLocalString } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface BookingFormProps {
      roomId: string;
@@ -25,22 +25,22 @@ const initialValue = {
      checkOutTime: new Date(),
 }
 export function BookingForm({ roomId, name, image, price }: BookingFormProps) {
+     const router = useRouter();
      const form = useForm<BookRoomSchemaType>({
           resolver: zodResolver(bookRoomSchema),
           defaultValues: initialValue,
      })
 
      async function bookingHandler(data: BookRoomSchemaType) {
-          if (data.checkInTime.getTime() < new Date().getTime() || data.checkOutTime.getTime() < data.checkInTime.getTime()) {
+          if (data.checkInTime.getTime() < new Date().getTime() || data.checkOutTime.getTime() <= data.checkInTime.getTime()) {
                alert("Please select a valid date");
                return;
           }
-          // const totalRentTime = (data.checkOutTime.getTime() - data.checkInTime.getTime()) / (1000 * 60 * 60);
-          // const totalAmount = (totalRentTime * price);
-          // console.log(totalAmount, totalRentTime)
           const response = await bookRoom({ ...data, roomId, name, image, price });
           if (response.success) {
                toast.success("Room booking successful");
+               router.push("/rooms/booked");
+               router.refresh();
           } else {
                console.error(response);
                toast.error(response.error || "Something went wrong");

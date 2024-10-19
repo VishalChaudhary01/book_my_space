@@ -1,12 +1,17 @@
+import Image from "next/image";
+import Link from "next/link";
 import { fetchAllRooms } from "../actions/room.action";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { RoomImage } from "@/components/RoomImage";
+import { toast } from "sonner";
 
 export default async function RoomLists() {
-     const { rooms } = await fetchAllRooms();
+     const { rooms, error } = await fetchAllRooms();
+     if (error) {
+          console.error(error);
+          toast.error(error || "Error while fetching rooms");
+     }
 
      return (
           <div className="flex flex-col gap-4">

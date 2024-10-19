@@ -1,5 +1,5 @@
 "use client";
-import { addRoomSchema, AddRoomSchemaType, UpdateRoomSchemaType } from "@/types/room";
+import { addRoomSchema, AddRoomSchemaType } from "@/types/room";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,21 +12,6 @@ import { MediaUploader } from "@/components/MediaUploader";
 import { addRoom, updateRoom, uploadImage } from "@/app/actions/room.action";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-
-interface IRoom {
-     id: string;
-     name: string;
-     image: string;
-     price: number;
-     lengthInFeet: number;
-     widthInFeet: number;
-     address: string;
-     city: string;
-     state: string;
-     pin: number;
-     description: string | null;
-     ownerId: string | null;
-}
 
 interface RoomFormProps {
      room?: IRoom;

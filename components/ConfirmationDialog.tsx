@@ -2,14 +2,14 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Button } from "./ui/button";
 
 interface ConfirmationDialogProps {
-     roomId: string;
+     id: string;
      header: string;
      buttonName: string;
      open: boolean;
      setOpen: (o: boolean) => void;
      handleClick: (id: string) => void;
 }
-export function ConfirmationDialog({ header, buttonName, roomId,  open, setOpen, handleClick }: ConfirmationDialogProps) {
+export function ConfirmationDialog({ header, buttonName, id,  open, setOpen, handleClick }: ConfirmationDialogProps) {
      return (
           <Dialog open={open} onOpenChange={setOpen}>
                <DialogContent className="sm:max-w-[425px] flex-center flex-col">
@@ -18,7 +18,7 @@ export function ConfirmationDialog({ header, buttonName, roomId,  open, setOpen,
                     </DialogHeader>
                     <DialogFooter>
                          <Button onClick={() => {
-                              handleClick(roomId);
+                              handleClick(id);
                               setOpen(false);
                               }} type="submit" className="bg-purple-1 hover:bg-purple-3">{buttonName}
                          </Button>

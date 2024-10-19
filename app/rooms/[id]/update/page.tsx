@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 export default async function UpdateRoom({ params }: { params: { id: string } }) {
      const session = await getServerSession(authOptions);
      const data = await fetchRoomById(params.id);
-     if (!session?.user) redirect("/signin");
+     if (session?.user && session?.user.id !== data?.room?.ownerId) redirect("/signin");
      
      return (
           <div>

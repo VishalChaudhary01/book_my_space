@@ -5,6 +5,7 @@ declare interface IRoom {
      price: number;
      lengthInFeet: number;
      widthInFeet: number;
+     totalBooking?: number;
      address: string;
      city: string;
      state: string;
@@ -22,4 +23,14 @@ declare interface IBookedRoom {
      price: number;
      checkInTime: Date;
      checkOutTime: Date;
+     ownerId: string | null;
+     status: "Pending" | "Confirm" | "Cancel" | "Success";
+     user: {
+      name: string,
+    }
+}
+
+interface UpdateStatusProps {
+     bookingId: string;
+     status: "Success" | "Confirm" | "Pending";
 }

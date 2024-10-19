@@ -29,3 +29,17 @@ export function formatToDateTimeLocalString(date: Date) {
   
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
+
+// Get Name based on status
+export function getStatusName(status: string) {
+  switch (status) {
+    case "Confirm":
+      return "Confirm";
+    case "Success":
+      return "Success";
+    case "Cancel":
+      return "Cancelled";
+    default:
+      return "Pending";
+  }
+}

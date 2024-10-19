@@ -24,6 +24,12 @@ export const bookRoomSchema = z.object({
      checkOutTime: z.date()
 })
 
+export const updateStatusSchema = z.object({
+     status: z.enum(["Success", "Confirm", "Pending"]),
+     bookingId: z.string()
+})
+
+export type UpdateStatusSchemaType = z.infer<typeof updateStatusSchema>;
 export type AddRoomSchemaType = z.infer<typeof addRoomSchema>;
 export type UpdateRoomSchemaType = z.infer<typeof updateRoomSchema>;
 export type BookRoomSchemaType = z.infer<typeof bookRoomSchema>;

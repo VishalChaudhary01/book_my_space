@@ -1,13 +1,18 @@
 import { fetchRoomById } from "@/app/actions/room.action";
 import { BookingForm } from "@/components/BookingForm";
 import { RoomImage } from "@/components/RoomImage";
+import { toast } from "sonner";
 
 export default async function RoomDetails({ params }: { params: { id: string } }) {
-     const { room } = await fetchRoomById(params.id);
-     if (!room) return <div>Room not found</div>
+     const { room, error } = await fetchRoomById(params.id);
+     if (error) {
+          console.error(error);
+          toast.error(error || "Error while fetching room details");
+     }
+
      return (
           <>
-               {room && (
+               {room ? (
                     <div className="flex flex-col p-4 w-full">
                          <div className="text-4xl font-medium text-gray-700 mb-6">
                               {room.name}
@@ -34,6 +39,8 @@ export default async function RoomDetails({ params }: { params: { id: string } }
                               {room.description}
                          </div>
                     </div>
+               ) : (
+                    <div className="flex-center text-2xl font-semibold text-gray-700">Room not found</div>
                )}
           </>
      )

@@ -1,39 +1,19 @@
-"use client";
-import { cancelBooking, fetchAllBookedRooms } from "@/app/actions/room.action";
+import { fetchAllBookedRooms } from "@/app/actions/room.action";
 import { BookedRoomCard } from "@/components/BookedRoomCard";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { authOptions } from "@/lib/auth/authOptions";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 import { toast } from "sonner";
 
-export default function BookedRooms() {
-     const router = useRouter();
-     const [bookedRooms, setBookedRooms] = useState<IBookedRoom[]>([]);
-     const [loading, setLoading] = useState(true);
-     const session = useSession();
+export default async function BookedRooms() {
+     const session = await getServerSession(authOptions);
+     if (!session?.user) redirect("/signin");
 
-     useEffect(() => {
-          if (!session?.data?.user) {
-               router.push("/signin");
-               return;
-          }
-          const bookedRooms = async () => {
-               const response = await fetchAllBookedRooms();
-               if (response.success) {
-                    setBookedRooms(response.bookedRooms)
-               } else {
-                    console.error(response);
-                    toast.error(response.error || "Something went wrong");
-               }
-               setLoading(false);
-          }
-          bookedRooms();
-     }, []);
-
-     async function handleCancel (id: string) {
+     const { bookedRooms, error } = await fetchAllBookedRooms();
+     if (error) {
+          console.error(error);
+          toast.error(error || "Error while fetching booked rooms");
      }
-
-     if (loading) return <div className="flex-center">Loading....</div>
      
      return (
           <div className="flex flex-col gap-4 relative">
@@ -44,7 +24,7 @@ export default function BookedRooms() {
                     <div className="flex-center flex-col w-full">
                          {bookedRooms?.length ? (
                               bookedRooms.map((room) => (
-                                   <BookedRoomCard key={room.id} room={room} handleCancel={handleCancel} />
+                                   <BookedRoomCard key={room.id} bookedRoom={room} />
                               ))
                          ) : (
                               <div className="text-xl font-bold text-red-700">

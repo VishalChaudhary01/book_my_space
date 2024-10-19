@@ -30,6 +30,7 @@ model Room {
   description String?
   owner        User?        @relation(fields: [ownerId], references: [id])
   ownerId      String?
+  totalBooking Int          @default(0)
   bookedRoom   BookedRoom[]
 }
 
@@ -39,9 +40,19 @@ model BookedRoom {
   userId       String
   room         Room?    @relation(fields: [roomId], references: [id], onDelete: SetNull)
   roomId       String?
+  ownerId      String?
+  status       Status    @default(Pending)
   name         String
   image        String
   price        Int
   checkInTime  DateTime
   checkOutTime DateTime
+  createdAt    DateTime  @default(now())
+}
+
+enum Status {
+  Pending
+  Confirm
+  Cancel
+  Success
 }
