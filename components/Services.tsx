@@ -9,10 +9,10 @@ export function Services() {
   return (
     <div className="flex flex-col items-center gap-8">
       <div>
-        <h2 className="flex-center text-3xl font-bold text-gray-700 pb-4">
+        <h2 className="flex-center text-2xl lg:text-3xl font-bold text-gray-700 pb-4">
           Our unique and affordable office solutions
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-4">
+        <div className="grid grid-cols-1 items-center justify-items-center md:grid-cols-2 gap-4 lg:grid-cols-4">
           {services.map((service) => (
             <ServiceCard
               key={service.header}
@@ -41,7 +41,7 @@ export function Services() {
           </div>
           <Button
             onClick={() => router.push("/rooms")}
-            className="bg-purple-1 hover:bg-purple-3 w-1/3 mt-4"
+            className="w-1/3 mt-4"
           >
             Search Rooms
           </Button>
@@ -53,7 +53,7 @@ export function Services() {
 
 function ServiceCard({ src, header, desc }: { src: string; header: string; desc: string; }) {
   return (
-    <div className="rounded-md">
+    <div className="rounded-md max-w-96">
       <Image
         src={src}
         alt="hybrid"

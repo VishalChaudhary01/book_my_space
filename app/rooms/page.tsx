@@ -23,18 +23,18 @@ export default async function RoomLists() {
                </div>
                {rooms?.length ? (
                     rooms.map((room) => (
-                         <Link href={`/rooms/${room.id}`} key={room.id} className="flex gap-2 lg:gap-16 cursor-pointer border rounded-md p-4">
+                         <Link href={`/rooms/${room.id}`} key={room.id} className="flex gap-2 lg:gap-16 cursor-pointer border rounded-md p-2 lg:p-4">
                               <div>
                                    <RoomImage src={room.image} />
                               </div>
                               <div className="flex flex-col w-max justify-between">
-                                   <div className="flex flex-col text-gray-700">
+                                   <div className="flex flex-col text-gray-700 text-sm lg:text-base md:text-base">
                                         <span className="lg:text-xl text-lg font-semibold">{room.name}</span>
-                                        <span><span className="text-base font-medium">Price: </span>{room.price} $/hour</span>
-                                        <span><span className="text-base font-medium">Size: </span>{room.lengthInFeet}&times;{room.widthInFeet} square feet</span>
-                                        <span><span className="text-base font-medium">Address: </span>{room.address} {room.city}</span>
+                                        <span><span className="font-semibold">Price: </span>{`Rs.${room.pricePerHour}/hour, Rs.${room.pricePerDay}/day, Rs.${room.pricePerMonth}/month`}</span>
+                                        <span><span className="font-medium">Size: </span>{room.lengthInFeet}&times;{room.widthInFeet} square feet</span>
+                                        <span><span className="font-medium">Address: </span>{room.address} {room.city}</span>
                                    </div>
-                                   <Button className="bg-purple-1 hover:bg-purple-3">View Details</Button>
+                                   <Button>View Details</Button>
                               </div>
                          </Link>
                     ))

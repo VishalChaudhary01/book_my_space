@@ -10,21 +10,12 @@ import { bookRoom } from "@/app/actions/room.action";
 import { formatToDateTimeLocalString } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
-interface BookingFormProps {
-     roomId: string;
-     name: string;
-     image: string;
-     price: number;
-}
 const initialValue = {
      roomId: "",
-     name: "",
-     image: "",
-     price: 0,
      checkInTime: new Date(),
      checkOutTime: new Date(),
 }
-export function BookingForm({ roomId, name, image, price }: BookingFormProps) {
+export function BookingForm({ roomId }: { roomId: string }) {
      const router = useRouter();
      const form = useForm<BookRoomSchemaType>({
           resolver: zodResolver(bookRoomSchema),
@@ -36,7 +27,8 @@ export function BookingForm({ roomId, name, image, price }: BookingFormProps) {
                alert("Please select a valid date");
                return;
           }
-          const response = await bookRoom({ ...data, roomId, name, image, price });
+
+          const response = await bookRoom({ ...data, roomId });
           if (response.success) {
                toast.success("Room booking successful");
                router.push("/rooms/booked");
@@ -50,6 +42,7 @@ export function BookingForm({ roomId, name, image, price }: BookingFormProps) {
      return (
           <Form {...form}>
                <form onSubmit={form.handleSubmit(bookingHandler)} className="space-y-6 my-4 border-2 border-purple-2 min-w-96 rounded-md shadow-sm p-4 lg:px-8">
+                    <div className="flex-center text-lg font-bold text-gray-600">Select time in multiple of hour</div>
                     <FormField
                          control={form.control}
                          name="checkInTime"
@@ -86,7 +79,9 @@ export function BookingForm({ roomId, name, image, price }: BookingFormProps) {
                          </FormItem>
                          )}
                     />
-                    <Button type="submit" className="w-full bg-purple-1 hover:bg-purple-3">Submit</Button>
+                    <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
+                         {form.formState.isSubmitting ? "Please wait..." : "Submit"}
+                    </Button>
                </form>
           </Form>
      )

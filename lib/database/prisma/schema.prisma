@@ -8,26 +8,43 @@ datasource db {
 }
 
 model User {
-  id          String       @id @default(cuid())
-  name        String
-  email       String       @unique
-  password    String
-  bookedRooms BookedRoom[]
-  rentedRooms Room[]
+  id            String         @id @default(cuid())
+  name          String
+  email         String         @unique
+  password      String?
+  bill          Int            @default(0)
+  isVerified    Boolean        @default(false)
+  emailVerified DateTime?
+  oauthProvider OauthProvider?
+  oauthId       String?
+  bookedRooms   BookedRoom[]
+  rentedRooms   Room[]
+}
+
+model VerificationToken {
+  token     String
+  id        String
+  createdAt DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
+  type      TokenType
+
+  @@unique([token, id])
 }
 
 model Room {
   id           String       @id @default(cuid())
   name         String
   image        String
-  price        Int
+  pricePerHour  Int
+  pricePerDay   Int
+  pricePerMonth Int
   lengthInFeet Int
   widthInFeet  Int
   address      String
   city         String
   state        String
   pin          Int
-  description String?
+  description  String?
   owner        User?        @relation(fields: [ownerId], references: [id])
   ownerId      String?
   totalBooking Int          @default(0)
@@ -35,24 +52,32 @@ model Room {
 }
 
 model BookedRoom {
-  id           String   @id @default(cuid())
-  user         User     @relation(fields: [userId], references: [id])
-  userId       String
-  room         Room?    @relation(fields: [roomId], references: [id], onDelete: SetNull)
-  roomId       String?
-  ownerId      String?
-  status       Status    @default(Pending)
-  name         String
-  image        String
-  price        Int
-  checkInTime  DateTime
-  checkOutTime DateTime
-  createdAt    DateTime  @default(now())
+  id            String   @id @default(cuid())
+  user          User     @relation(fields: [userId], references: [id])
+  userId        String
+  room          Room?    @relation(fields: [roomId], references: [id], onDelete: SetNull)
+  roomId        String?
+  ownerId       String?
+  status        Status   @default(BOOKED)
+  name          String
+  image         String
+  price         Int
+  checkInTime   DateTime
+  checkOutTime  DateTime
+  createdAt     DateTime @default(now())
 }
 
 enum Status {
-  Pending
-  Confirm
-  Cancel
-  Success
+  BOOKED
+  CANCEL
+  SUCCESS
+}
+
+enum OauthProvider {
+  GOOGLE
+}
+
+enum TokenType {
+  EMAIL_VERIFICATION
+  RESET_PASSWORD
 }

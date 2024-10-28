@@ -31,11 +31,25 @@ export const addRoomFormElements = [
     placeholder: "Enter room title",
   },
   {
-    label: "Price per hour (in USD)",
-    name: "price",
+    label: "Price per hour",
+    name: "pricePerHour",
     componentType: "input",
     type: "number",
     placeholder: "Enter price per hour",
+  },
+  {
+    label: "Price per day",
+    name: "pricePerDay",
+    componentType: "input",
+    type: "number",
+    placeholder: "Enter price per day",
+  },
+  {
+    label: "Price per month",
+    name: "pricePerMonth",
+    componentType: "input",
+    type: "number",
+    placeholder: "Enter price per month",
   },
   {
     label: "Length (in feet)",
@@ -86,3 +100,28 @@ export const addRoomFormElements = [
     placeholder: "Enter room description (optional)",
   },
 ];
+
+
+export const sidebarLinks = [
+  {
+    name: "Home",
+    href: "/",
+  },
+  {
+    name: "All Rooms",
+    href: "/rooms"
+
+  },
+  {
+    name: "Booked Rooms",
+    href: "/rooms/booked"
+  },
+  {
+    name: "Rented Rooms",
+    href: "/rooms/rented"
+  },
+  {
+    name: "Account",
+    href: "/account"
+  }
+]

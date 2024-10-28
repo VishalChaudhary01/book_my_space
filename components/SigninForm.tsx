@@ -9,6 +9,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { signinSchema, SigninSchemaType } from "@/types/user";
+import { GoogleOauthButton } from "./social-auth";
+import { PasswordInput } from "./PasswordInput";
 
 export function SigninForm() {
      const router = useRouter();
@@ -39,7 +41,7 @@ export function SigninForm() {
      return (
      <>
           <Form {...form}>
-               <form onSubmit={form.handleSubmit(signinHandler)} className="space-y-6">
+               <form onSubmit={form.handleSubmit(signinHandler)} className="flex flex-col gap-4">
                     <FormField
                          control={form.control}
                          name="email"
@@ -57,11 +59,17 @@ export function SigninForm() {
                          control={form.control}
                          name="password"
                          render={({ field }) => (
-                         <FormItem>
+                         <FormItem className="relative">
                               <FormLabel className="form-label">Password</FormLabel>
                               <FormControl>
-                                   <Input {...field} type="password" placeholder="Password" />
+                                   <PasswordInput field={field} placeholder="Password" />
                               </FormControl>
+                              <Link 
+                                   href={'/forget-password'}
+                                   className="absolute bottom-0 transform translate-y-6 right-0 text-muted-foreground text-base hover:underline"
+                                   >
+                                   Forget Password?
+                              </Link>
                               <FormMessage />
                          </FormItem>
                          )}
@@ -69,10 +77,11 @@ export function SigninForm() {
                     <Button
                          type="submit"
                          disabled={form.formState.isSubmitting}
-                         className="w-full bg-purple-1 hover:bg-purple-3"
+                         className="w-full mt-4"
                     >
                          {form.formState.isSubmitting ? "Please wait..." : "Sign In"}
                     </Button>
+                    <GoogleOauthButton label="Sign in with Google" />
                </form>
           </Form>
           <div className="flex items-center justify-center mt-6">

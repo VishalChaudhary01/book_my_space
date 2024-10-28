@@ -26,7 +26,9 @@ export function RoomForm({ room, roomId }: RoomFormProps) {
      const initialValue = {
           name: room?.name || "",
           image: room?.image || "",
-          price: room?.price || 0,
+          pricePerHour: room?.pricePerHour || 0,
+          pricePerDay: room?.pricePerDay || 0,
+          pricePerMonth: room?.pricePerMonth || 0,
           lengthInFeet: room?.lengthInFeet || 0,
           widthInFeet: room?.widthInFeet || 0,
           address: room?.address || "",
@@ -47,12 +49,13 @@ export function RoomForm({ room, roomId }: RoomFormProps) {
                     const uploadedImage = await uploadImage(image);
                     if (uploadedImage.publicId) {
                          const response = await addRoom({ ...data, image: uploadedImage.publicId });
+                         console.log(response);
                          if (response.success) {
                               toast.success("Room added successfully");
                               router.push("/rooms/rented");
                          } else {
                               console.error(response);
-                              toast.error("Error while adding room");
+                              toast.error(response.error || "Error while adding room");
                          }
                     } else {
                          console.error(uploadedImage);
@@ -114,7 +117,7 @@ export function RoomForm({ room, roomId }: RoomFormProps) {
                     <Button
                          type="submit"
                          disabled={form.formState.isSubmitting}
-                         className="w-full bg-purple-1 hover:bg-purple-3"
+                         className="w-full"
                     >
                          {form.formState.isSubmitting ? "Please wait..." : "Submit"}
                     </Button>

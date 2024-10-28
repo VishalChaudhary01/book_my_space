@@ -1,3 +1,4 @@
+import { EMAIL_VERIFICATION_LINK_EXPIRATION_TIME } from "@/config/auth.config";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -30,16 +31,39 @@ export function formatToDateTimeLocalString(date: Date) {
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
+export function getFormatedTime(checkInTime: Date, checkOutTime: Date) {
+  const timeDiff = checkOutTime.getTime() - checkInTime.getTime();
+  const forMonths = Math.floor(timeDiff / (1000*60*60*24*30));
+  let remaningTime = timeDiff % (1000*60*60*24*30);
+  const forDays = Math.floor(remaningTime / (1000*60*60*24));
+  remaningTime = remaningTime % (1000*60*60*24);
+  const forHours = Math.floor(remaningTime / (1000*60*60));
+  return{ forHours, forDays, forMonths};
+}
+
+export function isTimeMultipleOfHour(checkInTime: Date, checkoutTime: Date): boolean {
+  const timeDiff = (checkoutTime.getTime() - checkInTime.getTime()) / (1000 * 60 * 60);
+  return timeDiff % 1 === 0;
+}
+
 // Get Name based on status
 export function getStatusName(status: string) {
   switch (status) {
-    case "Confirm":
-      return "Confirm";
-    case "Success":
+    case "BOOKED":
+      return "Booked";
+    case "CANCEL":
+      return "Cancel";
+    case "SUCCESS":
       return "Success";
-    case "Cancel":
-      return "Cancelled";
     default:
       return "Pending";
   }
 }
+
+export const isTokenExpiredUtil = (createdAt: Date) => {
+  const now = new Date().getTime();
+  const tokenCreationTime = new Date(createdAt).getTime();
+  return (
+    now - tokenCreationTime > EMAIL_VERIFICATION_LINK_EXPIRATION_TIME * 1000
+  );
+};

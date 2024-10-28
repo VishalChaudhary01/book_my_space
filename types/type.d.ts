@@ -2,7 +2,9 @@ declare interface IRoom {
      id: string;
      name: string;
      image: string;
-     price: number;
+     pricePerHour: number;
+     pricePerDay: number;
+     pricePerMonth: number;
      lengthInFeet: number;
      widthInFeet: number;
      totalBooking?: number;
@@ -24,7 +26,7 @@ declare interface IBookedRoom {
      checkInTime: Date;
      checkOutTime: Date;
      ownerId: string | null;
-     status: "Pending" | "Confirm" | "Cancel" | "Success";
+     status: "BOOKED" | "CANCEL" | "SUCCESS";
      user: {
       name: string,
     }
@@ -32,5 +34,5 @@ declare interface IBookedRoom {
 
 interface UpdateStatusProps {
      bookingId: string;
-     status: "Success" | "Confirm" | "Pending";
+     status: "BOOKED" | "CANCEL" | "SUCCESS";
 }

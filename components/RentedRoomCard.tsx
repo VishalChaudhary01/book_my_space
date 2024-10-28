@@ -25,12 +25,12 @@ export function RentedRoomCard({ room }: { room: IRoom }) {
      }
      
      return (
-          <div className="flex gap-4 border w-full lg:w-2/3 h-40 border-purple-2 shadow-md rounded-md p-2">
+          <div className="flex gap-4 border w-full h-40 border-purple-2 shadow-md rounded-md p-2">
                <RoomImage src={room.image} w={200} h={200} />                    
                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between lg:w-3/4 text-base text-gray-700 px-4">
-                    <Link href={`/rooms/${room.id}`} className="flex flex-col cursor-pointer">
+                    <Link href={`/rooms/${room.id}`} className="flex flex-col text-sm lg:text-base md:text-base cursor-pointer">
                          <span className="font-semibold">{room.name}</span>
-                         <span><span className="font-semibold">Price: </span>{room.price} $/hour</span>
+                         <span><span className="font-semibold">Price: </span>{`Rs.${room.pricePerHour}/hour, Rs.${room.pricePerDay}/day, Rs.${room.pricePerMonth}/month`}</span>
                          <span><span className="font-semibold">Size: </span>{room.lengthInFeet}&times;{room.widthInFeet} square feet</span>
                     </Link>
                     <div className="flex items-center py-4">
@@ -42,7 +42,7 @@ export function RentedRoomCard({ room }: { room: IRoom }) {
                     </div>
                </div>
                {openDialog && (
-                    <ConfirmationDialog id={room.id} handleClick={handleDelete} open={openDialog} setOpen={setOpenDialog} header="Are you sure want to delete this room" buttonName="Yes" />
+                    <ConfirmationDialog id={room.id} handleClick={handleDelete} open={openDialog} setOpen={setOpenDialog} title="Are you sure want to delete this room" buttonName="Yes" />
                )}
           </div>
      )

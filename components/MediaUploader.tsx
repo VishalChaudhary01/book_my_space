@@ -70,7 +70,7 @@ export function MediaUploader({
                   onClick={() => open()}
                   className="cursor-pointer flex flex-col w-full gap-2 justify-center items-center"
                 >
-                  <Button variant="ghost" size="icon">
+                  <Button variant="ghost" type="button" size="icon">
                     <Image
                       src="/icons/add.svg"
                       alt="add"

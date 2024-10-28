@@ -1,19 +1,20 @@
 "use client";
 import { Input } from "./ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { signupSchema, SignupSchemaType } from "@/types/user";
 import { signup } from "@/app/actions/auth.action";
+import { GoogleOauthButton } from "./social-auth";
+import { PasswordInput } from "./PasswordInput";
+import { useState } from "react";
+import { ConfirmationDialog } from "./ConfirmationDialog";
 
 export function SignupForm() {
-     const router = useRouter();
-
+     const [openDialog, setOpenDialog] = useState(false);
      const form = useForm<SignupSchemaType>({
           resolver: zodResolver(signupSchema),
           defaultValues: {
@@ -26,22 +27,17 @@ export function SignupForm() {
      async function signupHandler(data: SignupSchemaType) {
           const registerUser = await signup(data);
           if (registerUser.success) {
-               const response = await signIn("credentials", { ...data, redirect: false });
-               if (!response?.ok) {
-                    return toast.error(response?.error || "Something went wrong, Please try again!");
-               } else {
-                    toast.success("Signup successful");
-                    router.push("/");
-               }
+               toast.success(registerUser.message);
+               setOpenDialog(true);
           } else {
-               toast.error(registerUser.error || "Error while signup user");
+               toast.error(registerUser.error || "Error while signup");
           }
      }
 
      return (
           <>
                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(signupHandler)} className="space-y-6">
+                    <form onSubmit={form.handleSubmit(signupHandler)} className="flex flex-col gap-4">
                          <FormField
                               control={form.control}
                               name="name"
@@ -72,11 +68,17 @@ export function SignupForm() {
                               control={form.control}
                               name="password"
                               render={({ field }) => (
-                                   <FormItem>
+                                   <FormItem className="relative">
                                         <FormLabel className="form-label">Password</FormLabel>
                                         <FormControl>
-                                             <Input {...field} type="password" placeholder="Password" />
+                                             <PasswordInput field={field} placeholder="Password"/>
                                         </FormControl>
+                                        <Link 
+                                             href={'/forget-password'}
+                                             className="absolute bottom-0 transform translate-y-6 right-0 text-muted-foreground text-base hover:underline"
+                                             >
+                                             Forget Password?
+                                        </Link>
                                         <FormMessage />
                                    </FormItem>
                               )}
@@ -84,10 +86,11 @@ export function SignupForm() {
                          <Button
                               type="submit"
                               disabled={form.formState.isSubmitting}
-                              className="w-full bg-purple-1 hover:bg-purple-3"
+                              className="w-full mt-4"
                          >
                               {form.formState.isSubmitting ? "Please wait..." : "Sign Up"}
                          </Button>
+                         <GoogleOauthButton label="Sign up with Google"/>
                     </form>
                </Form>
                <div className="flex items-center justify-center mt-6">
@@ -98,6 +101,7 @@ export function SignupForm() {
                          </Link>
                     </span>
                </div>
+               {openDialog && <ConfirmationDialog open={openDialog} setOpen={setOpenDialog} title="Email han been registered successfully," desc="Please go to your email address and click the confirmation link to activate your account." />}
           </>
      );
 }
