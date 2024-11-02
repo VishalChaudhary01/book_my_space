@@ -9,14 +9,14 @@ export function cn(...inputs: ClassValue[]) {
 // ERROR HANDLER
 export const handleError = (error: unknown) => {
   if (error instanceof Error) {
-    console.error(error.message);
-    throw new Error(`Error: ${error.message}`);
+      console.error(error.message);
+      return { success: false, error: error.message };
   } else if (typeof error === "string") {
-    console.error(error);
-    throw new Error(`Error: ${error}`);
+      console.error(error);
+      return { success: false, error: error };
   } else {
-    console.error(error);
-    throw new Error(`Unknown error: ${JSON.stringify(error)}`);
+      console.error(error);
+      return { success: false, error: `Unknown error: ${JSON.stringify(error)}` };
   }
 }
 

@@ -38,6 +38,9 @@ export function Header() {
                     <div className="flex-center">
                          <Button onClick={() => router.push("/signin")} className="bg-white hover:bg-purple-2 text-purple-1">Signin</Button>
                          <Button onClick={() => router.push("/signup")} className="hidden md:block lg:block bg-white hover:bg-purple-2 text-purple-1">Signup</Button>
+                         <Button onClick={() => setOpenSheet(true)} variant="ghost" size="sm" className="md:hidden lg:hidden bg-white hover:bg-purple-2">
+                              <Image src="/icons/right-align.svg" alt="align" width={24} height={24} />
+                         </Button>
                     </div>
                )}
                {openSheet && <SidebarSheet open={openSheet} setOpen={setOpenSheet} />}
@@ -50,6 +53,8 @@ interface SidebarProps {
      setOpen: (e: boolean) => void;
 }
 export function SidebarSheet({ open, setOpen }: SidebarProps) {
+     const session = useSession();
+     const router = useRouter();
      const pathname = usePathname();
      return (
           <Sheet open={open} onOpenChange={() => setOpen(false)}>
@@ -58,17 +63,38 @@ export function SidebarSheet({ open, setOpen }: SidebarProps) {
                          <SheetTitle className="text-2xl font-bold text-gray-600 my-4">BookMySpace</SheetTitle>
                     </SheetHeader>
                     <div className="flex flex-col gap-2">
-                         {sidebarLinks.map((link) => {
+                         {session?.data?.user ? sidebarLinks.map((link) => {
                               const isActive = link.href === pathname;
                               return (
-                                   <Link href={link.href} onClick={() => setOpen(false)} key={link.name} className={`flex gap-2 py-2 px-4 rounded-md ${isActive && "bg-purple-1 text-white"}`}>
+                                   <Link href={link.href} onClick={() => setOpen(false)} key={link.name} className={`flex gap-2 py-2 px-4 rounded-md shadow-sm border border-purple-1/15 ${isActive && "bg-purple-1 text-white"}`}>
                                         <span className="text-base font-medium">{link.name}</span>
                                    </Link>
                               )
-                         })}
+                         }) : (
+                              <Link href="/rooms" onClick={() => setOpen(false)} className={`flex gap-2 py-2 px-4 rounded-md shadow-sm border border-purple-1/15`}>
+                                   <span className="text-base font-medium">All Rooms</span>
+                              </Link>
+                         )}
                     </div>
                     <SheetFooter>
-                         <Button onClick={() => signOut()} className="mt-6">Logout</Button>
+                         {session?.data?.user ? (
+                              <Button onClick={() => {
+                                   setOpen(false);
+                                   signOut()
+                              }} className="mt-6">Logout</Button>
+                         ) : (
+                              <div className="flex flex-col gap-2 mt-4">
+                                   <Button onClick={() =>{
+                                        setOpen(false);
+                                        router.push("/signin")
+                                   }}>Signin</Button>
+                                   <Button onClick={() => {
+                                        setOpen(false)
+                                        router.push("/signup")
+                                   }} className="mt-">Signup</Button>
+                              </div>
+                         )
+                    }
                     </SheetFooter>
                </SheetContent>
           </Sheet>

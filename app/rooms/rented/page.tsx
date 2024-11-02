@@ -30,7 +30,7 @@ export default async function RentedRooms() {
                               ))
                          ) : (
                               <div className="text-xl font-bold text-red-700">
-                                   You don't have any rented rooms currently!
+                                   You don&apos;t have any rented rooms currently!
                               </div>
                          )}
                     </div>

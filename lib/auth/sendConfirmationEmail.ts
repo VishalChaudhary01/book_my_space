@@ -11,7 +11,7 @@ export async function sendConfirmationEmail(email: string, confirmationLink: str
           refreshToken: process.env.OAUTH_REFRESH_TOKEN!,
      };
 
-     let transporter = nodemailer.createTransport({
+     const transporter = nodemailer.createTransport({
           service: 'gmail',
           auth: auth,
      });

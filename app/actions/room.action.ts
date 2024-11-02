@@ -2,11 +2,11 @@
 import { authOptions } from "@/lib/auth/authOptions";
 import cloudinary from "@/lib/cloudinary";
 import prisma from "@/lib/database";
-import { getFormatedTime, isTimeMultipleOfHour } from "@/lib/utils";
+import { getFormatedTime, handleError, isTimeMultipleOfHour } from "@/lib/utils";
 import { addRoomSchema, AddRoomSchemaType, bookRoomSchema, BookRoomSchemaType, updateRoomSchema, UpdateRoomSchemaType } from "@/types/room";
 import { getServerSession } from "next-auth";
 
-export async function uploadImage(image: any) {
+export async function uploadImage(image: any): Promise<IUploadImageResponse> {
      try {
           const sizeInMB = image.size / 1024*1024;
           if (sizeInMB > 2) throw new Error("Image size must be smaller then 2MB")
@@ -15,13 +15,13 @@ export async function uploadImage(image: any) {
                folder: image.asset_folder
           });
           return { success: true, publicId: uploadedImage.public_id }
-     } catch (error: any) {
-          return { error: error.message || "Something went wrong" }
+     } catch (error) {
+          return handleError(error);
      }
 }
 
 // Add room for rent
-export async function addRoom(formData: AddRoomSchemaType) {
+export async function addRoom(formData: AddRoomSchemaType): Promise<IResponse> {
      const session = await getServerSession(authOptions);
      try {
           const user = await prisma.user.findFirst({
@@ -43,13 +43,13 @@ export async function addRoom(formData: AddRoomSchemaType) {
                }
           });
           return { success: true }
-     } catch (error: any) {
-          return { error: error.message || "Something went wrong" }
+     } catch (error) {
+          return handleError(error);
      }
 }
 
 // Book room -> User
-export async function bookRoom(formData: BookRoomSchemaType) {
+export async function bookRoom(formData: BookRoomSchemaType): Promise<IResponse> {
      const session = await getServerSession(authOptions);
      try {
           const userId = session?.user?.id;
@@ -120,14 +120,13 @@ export async function bookRoom(formData: BookRoomSchemaType) {
                return true;
           });
           return { success: true };
-     } catch (error: any) {
-          console.error(error);
-          return { error: error.message || "Something went wrong" };
+     } catch (error) {
+          return handleError(error);
      }
 }
 
 // Fetch all bookings of a Rented Room -> Room owner
-export async function fetchAllBookingByRoom(roomId: string) {
+export async function fetchAllBookingByRoom(roomId: string): Promise<IFetchAllBookingByRoomResponse> {
      const session = await getServerSession(authOptions);
      try {
           const userId = session?.user?.id;
@@ -149,14 +148,13 @@ export async function fetchAllBookingByRoom(roomId: string) {
                }
           });
           return { success: true, bookingList };
-     } catch (error: any) {
-          console.error(error);
-          return { error: error.message || "Something went wrong" };
+     } catch (error) {
+          return handleError(error);
      }
 }
 
 // Room Owner Update the status of bookings -> Room owner
-export async function updateStatus({ bookingId, status }: UpdateStatusProps) {
+export async function updateStatus({ bookingId, status }: UpdateStatusProps): Promise<IResponse> {
      const session = await getServerSession(authOptions);
      try {
           const userId = session?.user?.id;
@@ -181,14 +179,13 @@ export async function updateStatus({ bookingId, status }: UpdateStatusProps) {
                });
           }
           return { success: true }
-     } catch (error: any) {
-          console.error(error);
-          return { error: error.message || "Something went wrong" };
+     } catch (error) {
+          return handleError(error);
      }
 }
 
 // Cancel Booking by user -> User
-export async function cancelBooking(bookingId: string) {
+export async function cancelBooking(bookingId: string): Promise<IResponse> {
      const session = await getServerSession(authOptions);
      try {
           const userId = session?.user?.id;
@@ -205,14 +202,13 @@ export async function cancelBooking(bookingId: string) {
                }
           });
           return { success: true }
-     } catch (error: any) {
-          console.error(error);
-          return { error: error.message || "Something went wrong" };
+     } catch (error) {
+          return handleError(error);
      }
 }
 
 // Fetch all rooms booked by user -> User
-export async function fetchAllBookedRooms() {
+export async function fetchAllBookedRooms(): Promise<IFetchAllBookedRoomsResponse> {
      const session = await getServerSession(authOptions);
      try {
           const userId = session?.user?.id;
@@ -233,14 +229,13 @@ export async function fetchAllBookedRooms() {
                },
           });
           return { success: true, bookedRooms };
-     } catch (error: any) {
-          console.error(error);
-          return { error: error.message || "Something went wrong" };
+     } catch (error) {
+          return handleError(error);
      }
 }
 
 // Fetch all rooms
-export async function fetchAllRooms() {
+export async function fetchAllRooms(): Promise<IFetchRoomsResponse> {
      try {
           const rooms = (await prisma.room.findMany({
                where: {
@@ -251,29 +246,27 @@ export async function fetchAllRooms() {
           })).reverse();
           
           return { success: true, rooms };
-     } catch (error: any) {
-          console.error(error);
-          return { error: error.message || "Something went wrong" };
+     } catch (error) {
+          return handleError(error);
      }
 }
 
 // Fetch room by room_id
-export async function fetchRoomById(roomId: string) {
+export async function fetchRoomById(roomId: string): Promise<IFetchRoomByIdResponse> {
      try {
           const room = await prisma.room.findFirst({
                where: {
                     id: roomId,
                }
           });
-          return { success: true, room }
-     } catch (error: any) {
-          console.error(error);
-          return { error: error.message || "Something went wrong" };
+          return { success: true, room: room }
+     } catch (error) {
+          return handleError(error);
      }
 }
 
 // Fetch all rented rooms -> Room owner
-export async function fetchRoomByOwner() {
+export async function fetchRoomByOwner(): Promise<IFetchRoomsResponse> {
      const session = await getServerSession(authOptions);
      try {
           const userId = session?.user?.id;
@@ -284,14 +277,13 @@ export async function fetchRoomByOwner() {
                }
           })).reverse();
           return { success: true, rooms }
-     } catch (error: any) {
-          console.error(error);
-          return { error: error.message || "Something went wrong" };
+     } catch (error) {
+          return handleError(error);
      }
 }
 
 // Update room -> Room owner
-export async function updateRoom(formData: UpdateRoomSchemaType, roomId: string) {
+export async function updateRoom(formData: UpdateRoomSchemaType, roomId: string): Promise<IResponse> {
      const session = await getServerSession(authOptions);
      try {
           const userId = session?.user?.id;
@@ -318,14 +310,13 @@ export async function updateRoom(formData: UpdateRoomSchemaType, roomId: string)
                }
           });
           return { success: true }
-     } catch (error: any) {
-          console.error(error);
-          return { error: error.message || "Something went wrong" };
+     } catch (error) {
+          return handleError(error);
      }
 }
 
 // Delete room -> Room owner
-export async function deleteRoom(roomId: string) {
+export async function deleteRoom(roomId: string): Promise<IResponse> {
      const session = await getServerSession(authOptions);
      try {
           const userId = session?.user?.id;
@@ -344,8 +335,7 @@ export async function deleteRoom(roomId: string) {
                }
           });
           return { success: true }
-     } catch (error: any) {
-          console.error(error);
-          return { error: error.message || "Something went wrong" };
+     } catch (error) {
+          return handleError(error);
      }
 }

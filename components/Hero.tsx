@@ -12,8 +12,7 @@ export function Hero() {
                     <div className="flex-center flex-col ">
                          <h1 className="flex-center text-center flex-col">
                               Best place to book meeting room,  
-                              Seminar hall or coworking space
-                              and period.
+                              Seminar hall or coworking space.
                          </h1>
                          <Link href="/rooms">
                               <Button>Search Rooms</Button>

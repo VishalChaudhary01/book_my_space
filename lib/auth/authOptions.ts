@@ -4,7 +4,6 @@ import { NextAuthOptions } from "next-auth"
 import bcrypt from "bcrypt";
 import prisma from "../database";
 import { signinSchema } from "@/types/user";
-import { handleError } from "../utils";
 
 export const authOptions = { 
      providers: [
@@ -19,26 +18,22 @@ export const authOptions = {
                     password: { label: "Password", type: "password" }
                },
                async authorize(credentials): Promise<any> {
-                    try {
-                         const { data, error } = signinSchema.safeParse(credentials);
-                         if (error) throw new Error(error.issues[0].message || "Invalid input")
-                         const user = await prisma.user.findUnique({
-                              where: {
-                                   email: data.email,
-                                   emailVerified: { not: null }
-                              }
-                         });
-                         if (!user || !user.password) throw new Error("User not found");
-                         const verifyPassword = await bcrypt.compare(data.password, user.password);
-                         if (!verifyPassword) throw new Error("Incorrect password")
-                         return {
-                              id: user.id,
-                              name: user.name,
-                              email: user.email
+                    const { data, error } = signinSchema.safeParse(credentials);
+                    if (error) throw new Error(error.issues[0].message || "Invalid input")
+                    const user = await prisma.user.findUnique({
+                         where: {
+                              email: data.email,
+                              emailVerified: { not: null }
                          }
-                    } catch (error) {
-                         handleError(error);
-                         return null;
+                    });
+                    if (!user ) throw new Error("User not found");
+                    if (!user.password) throw new Error("You are signed up with a different provider, try signing in with Google!")
+                    const verifyPassword = await bcrypt.compare(data.password, user.password);
+                    if (!verifyPassword) throw new Error("Incorrect password")
+                    return {
+                         id: user.id,
+                         name: user.name,
+                         email: user.email
                     }
                }
           })

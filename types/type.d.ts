@@ -1,3 +1,40 @@
+declare interface IResponse {
+     success: boolean;
+     message?: string;
+     error?: string;
+}
+
+declare interface IFetchAllBookingByRoomResponse {
+     success: boolean;
+     bookingList?: IBookedRoom[];
+     error?: string;
+}
+
+declare interface IFetchAllBookedRoomsResponse {
+     success: boolean;
+     bookedRooms?: IBookedRoom[];
+     error?: string;
+}
+
+declare interface IFetchRoomsResponse {
+     success: boolean;
+     rooms?: IRoom[];
+     error?: string;
+}
+
+declare interface IFetchRoomByIdResponse {
+     success: boolean;
+     room?: IRoom | null;
+     error?: string;
+}
+
+declare interface IUploadImageResponse {
+     success: boolean;
+     publicId?: string;
+     error?: string;
+}
+
+
 declare interface IRoom {
      id: string;
      name: string;

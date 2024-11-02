@@ -4,10 +4,10 @@ import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import { signupSchema, SignupSchemaType } from "@/types/user";
 import { sendConfirmationEmail } from "@/lib/auth/sendConfirmationEmail";
-import { isTokenExpiredUtil } from "@/lib/utils";
+import { handleError, isTokenExpiredUtil } from "@/lib/utils";
 import { TokenType } from "@prisma/client";
 
-export async function signup(inputData: SignupSchemaType) {
+export async function signup(inputData: SignupSchemaType): Promise<IResponse> {
      try {
           const result = signupSchema.safeParse(inputData);
           if (!result.success) throw new Error(result.error.issues[0]?.message || "Invalid input");
@@ -49,9 +49,8 @@ export async function signup(inputData: SignupSchemaType) {
           );
 
           return { success: true, message: "User registered successfully. A verification link has been sent to your email." };
-     } catch (error: any) {
-          console.error(error);
-          return { error: error.message || "Something went wrong!" }
+     } catch (error) {
+          return handleError(error);
      }
 }
 
@@ -73,9 +72,8 @@ async function resendVerificationLink({ userId, email, prevToken, reIssue=false,
           });
           const confirmationLink = `${process.env.NEXTAUTH_URL}/verify-email/${newToken}`;
           await sendConfirmationEmail(email, confirmationLink, type);
-     } catch (error: any) {
-          console.error(error);
-          return { error: error.message || "Something went wrong!"}
+     } catch (error) {
+          return handleError(error);
      }
 }
 
@@ -83,9 +81,9 @@ async function resendVerificationLink({ userId, email, prevToken, reIssue=false,
 // It is serving two purpose/
 // 1. Email verification
 // 2. In case link got expired, by passing resend:true will be re-usable to re-issue the verfication link
-export async function verifyEmail({ token, resend=false }: { token: string, resend?: boolean }) {
+export async function verifyEmail({ token, resend=false }: { token: string, resend?: boolean }): Promise<IResponse> {
      try {
-          let verificationToken = await prisma.verificationToken.findFirst({
+          const verificationToken = await prisma.verificationToken.findFirst({
                where: {
                     token,
                     type: "EMAIL_VERIFICATION",
@@ -132,13 +130,12 @@ export async function verifyEmail({ token, resend=false }: { token: string, rese
                success: true,
                message: "Verfication link resent successfully!",
           }
-     } catch (error: any) {
-          console.error(error);
-          return { error: error.message || "Something went wrong!" }
+     } catch (error) {
+          return handleError(error);
      }
 }
 
-export async function forgetPassword({ email }: { email: string }) {
+export async function forgetPassword({ email }: { email: string }): Promise<IResponse> {
      try {
           const user = await prisma.user.findFirst({ where: { email }});
           if (!user) throw new Error("No account associated with this email address.");
@@ -158,14 +155,13 @@ export async function forgetPassword({ email }: { email: string }) {
                success: true,
                message: "A password reset link has been sent to your email. Please check your inbox."
           }
-     } catch (error: any) {
-          console.error(error);
-          return { error: error.message || "Something went wrong!" }
+     } catch (error) {
+          return handleError(error);
      }
 }
 
 
-export async function resetPassword({ token, password }: { token: string, password: string }) {
+export async function resetPassword({ token, password }: { token: string, password: string }): Promise<IResponse> {
      try {
           const verificationToken = await prisma.verificationToken.findFirst({
                where: { token },
@@ -201,8 +197,7 @@ export async function resetPassword({ token, password }: { token: string, passwo
                success: true,
                message: "Your password has been successfully updated.",
           }
-     } catch (error: any) {
-          console.error(error);
-          return { error: error.message || "Something went wrong!" }
+     } catch (error) {
+         return handleError(error);
      }
 }

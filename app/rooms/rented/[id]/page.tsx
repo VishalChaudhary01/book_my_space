@@ -19,7 +19,7 @@ export default async function Bookings({ params }: { params: { id: string } }) {
           <div className="flex flex-col w-full items-center gap-4">
                {bookingList?.length ? (
                     bookingList.map((booking) => (
-                         <BookingCard booking={booking} />
+                         <BookingCard key={booking.id} booking={booking} />
                     ))
                ) : (
                     <div>

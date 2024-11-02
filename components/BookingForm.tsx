@@ -24,7 +24,7 @@ export function BookingForm({ roomId }: { roomId: string }) {
 
      async function bookingHandler(data: BookRoomSchemaType) {
           if (data.checkInTime.getTime() < new Date().getTime() || data.checkOutTime.getTime() <= data.checkInTime.getTime()) {
-               alert("Please select a valid date");
+               toast.error("Please select a valid date");
                return;
           }
 

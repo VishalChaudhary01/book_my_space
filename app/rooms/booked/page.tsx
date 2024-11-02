@@ -28,7 +28,7 @@ export default async function BookedRooms() {
                               ))
                          ) : (
                               <div className="text-xl font-bold text-red-700">
-                                   You don't have booked any room yet!
+                                   You don&apos;t have booked any room yet!
                               </div>
                          )}
                     </div>
