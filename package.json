@@ -2,6 +2,9 @@
   "name": "room_bookit",
   "version": "0.1.0",
   "private": true,
+  "prisma": {
+    "schema": "./lib/database/prisma/schema.prisma"
+  },
   "scripts": {
     "postinstall": "prisma generate",
     "dev": "next dev",
