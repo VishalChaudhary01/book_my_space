@@ -17,8 +17,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Room Bookit",
-  description: "Book or Rent your room",
+  title: "Book My Space",
+  description: "Book or Rent your space",
 };
 
 export default function RootLayout({

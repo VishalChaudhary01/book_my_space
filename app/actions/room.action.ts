@@ -237,10 +237,11 @@ export async function fetchAllBookedRooms(): Promise<IFetchAllBookedRoomsRespons
 // Fetch all rooms
 export async function fetchAllRooms(): Promise<IFetchRoomsResponse> {
      try {
+          const maxBillLimit = Number(process.env.MAX_BILL_LIMIT) || 1000;
           const rooms = (await prisma.room.findMany({
                where: {
                     owner: {
-                         bill: { lte: Number(process.env.MAX_BILL_LIMIT! as string)}
+                         bill: { lte: maxBillLimit }
                     }
                }
           })).reverse();
