@@ -39,15 +39,10 @@ export async function checkoutPayment(): Promise<ICheckoutResponse> {
      }
 }
 
-export async function updateUserBill(): Promise<IResponse> {
-     const session = await getServerSession(authOptions);
+export async function updateUserBill(userId: string): Promise<IResponse> {
      try {
-          const user = await prisma.user.findFirst({
-               where: { id: session?.user.id ?? "" },
-          })
-          if (!user) throw new Error("Unauthorized user, Please login first!");
           await prisma.user.update({
-               where: { id: user.id },
+               where: { id: userId },
                data: { bill: 0 }
           });
           return { success: true, message: "Payment Successfull"}

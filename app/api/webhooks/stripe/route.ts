@@ -1,6 +1,8 @@
 import { updateUserBill } from "@/app/actions/bill.action";
 import { NextResponse } from "next/server";
-import stripe from "stripe";
+import Stripe from "stripe";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(request:Request) {
      const body = await request.text();
@@ -16,7 +18,8 @@ export async function POST(request:Request) {
      
      const eventType = event.type;
      if (eventType === "checkout.session.completed") {
-          await updateUserBill();
+          const userId = event?.data?.object?.metadata?.userId as string;
+          await updateUserBill(userId);
           return NextResponse.json({ message: "OK" })
      }
      return new Response("", { status: 200 });
