@@ -3,11 +3,11 @@ import { authOptions } from '@/lib/auth/authOptions';
 import prisma from '@/lib/database';
 import { handleError } from '@/lib/utils';
 import { getServerSession } from 'next-auth';
-
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY!);
+import Stripe from 'stripe';
 
 export async function checkoutPayment(): Promise<ICheckoutResponse> {
      const session = await getServerSession(authOptions);
+     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
      try {
           const user = await prisma.user.findFirst({
                where: { id: session?.user.id ?? "" },
@@ -32,7 +32,8 @@ export async function checkoutPayment(): Promise<ICheckoutResponse> {
                success_url: `${process.env.NEXTAUTH_URL}`,
                cancel_url: `${process.env.NEXTAUTH_URL}`,
           });
-          return { success: true, url: checkoutSession.url };
+
+          return { success: true, url: checkoutSession.url as string };
      } catch (error) {
           return handleError(error);
      }
