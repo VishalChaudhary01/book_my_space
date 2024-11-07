@@ -34,6 +34,11 @@ declare interface IUploadImageResponse {
      error?: string;
 }
 
+declare interface ICheckoutResponse {
+     success: boolean;
+     url?: string;
+     error?: string;
+}
 
 declare interface IRoom {
      id: string;

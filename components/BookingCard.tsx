@@ -40,7 +40,7 @@ export function BookingCard({ booking }: { booking: IBookedRoom}) {
                     {`Status: ${getStatusName(booking.status)}`}
                </Button>
                {(openDialog && booking.id) && (
-                    <ConfirmationDialog handleClick={() => handleUpdate(booking.id)} open={openDialog} setOpen={setOpenDialog} id={booking.id} buttonName="Yes, Booking Successful" title="Mars as successfull?" desc="Are you sure want to mark as successfull to this booking" />
+                    <ConfirmationDialog handleClick={() => handleUpdate(booking.id)} open={openDialog} setOpen={setOpenDialog} id={booking.id} buttonName="Yes, Booking Successful" title="Mark as successfull booking!" desc="Are you sure want to mark as successfull to this booking" />
                )}
           </div>
      )
