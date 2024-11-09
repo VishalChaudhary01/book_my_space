@@ -103,7 +103,6 @@ export const addRoomFormElements = [
   },
 ];
 
-
 export const sidebarLinks = [
   {
     name: "Home",
@@ -126,4 +125,19 @@ export const sidebarLinks = [
     name: "Account",
     href: "/account"
   }
-]
+];
+
+export const footerItems = [
+  {
+    label: 'About Us',
+    href: '/',
+  },
+  {
+    label: 'Terms of Service',
+    href: '/',
+  },
+  {
+    label: 'Privacy Policy',
+    href: '/',
+  },
+];

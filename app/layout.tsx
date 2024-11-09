@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from 'sonner'
 import { Header } from "@/components/Header";
 import { Providers } from "@/providers/auth.provider";
+import Footer from "@/components/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -34,11 +35,12 @@ export default function RootLayout({
         <Providers>
           <Toaster richColors />
           <div className="m-4 lg:mx-8">
-            <div>
-              <Header />
-            </div>
-            {children}
+            <Header />
+            <main className="min-h-screen">
+              {children}
+            </main>
           </div>
+          <Footer />
         </Providers>
       </body>
     </html>

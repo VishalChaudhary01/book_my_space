@@ -15,7 +15,7 @@ export function Header() {
      const session = useSession();
 
      return (
-          <div className="sticky top-4 flex-between rounded-xl py-4 px-4 mb-4 lg:px-8 bg-purple-1 text-white shadow-sm">
+          <div className="sticky z-50 top-4 flex-between rounded-xl py-4 px-4 mb-4 lg:px-8 bg-purple-1 text-white shadow-sm">
                <Link href="/" className="text-[20px] lg:text-[25px] font-bold">BookMySpace</Link>
                <div className="hidden md:flex-center lg:flex-center text-base lg:font-medium">
                     <Link href="/rooms" className="ghost-link">All Rooms</Link>
