@@ -10,13 +10,16 @@ export default async function Bookings({ params }: { params: { id: string } }) {
      if (!session?.user) redirect("/signin");
 
      const { bookingList, error } = await fetchAllBookingByRoom(params.id);
-     if (error) {
+     if (!bookingList || error) {
           console.error(error);
           return toast.error(error || "Something went wrong");
      }
      
      return (
           <div className="flex flex-col w-full items-center gap-4">
+               <div className="flex md:justify-center my-4 lg:text-2xl text-xl font-bold text-gray-700">
+                    All Bookings on {bookingList[0].name}
+               </div>
                {bookingList?.length ? (
                     bookingList.map((booking) => (
                          <BookingCard key={booking.id} booking={booking} />
