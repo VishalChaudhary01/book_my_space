@@ -1,4 +1,5 @@
 "use server";
+import { DEFAULT_PAGE, ROOMS_PER_PAGE } from "@/config";
 import { authOptions } from "@/lib/auth/authOptions";
 import cloudinary from "@/lib/cloudinary";
 import prisma from "@/lib/database";
@@ -235,15 +236,24 @@ export async function fetchAllBookedRooms(): Promise<IFetchAllBookedRoomsRespons
 }
 
 // Fetch all rooms
-export async function fetchAllRooms(): Promise<IFetchRoomsResponse> {
+export async function fetchAllRooms({ searchQuery = "", page = DEFAULT_PAGE }: RoomListsProps): Promise<IFetchRoomsResponse> {
+     const skip = (Number(page) - 1) * ROOMS_PER_PAGE;
      try {
           const maxBillLimit = Number(process.env.MAX_BILL_LIMIT) || 1000;
           const rooms = (await prisma.room.findMany({
                where: {
                     owner: {
                          bill: { lte: maxBillLimit }
-                    }
-               }
+                    },
+                    OR: [
+                         { name: { contains: searchQuery, mode: 'insensitive' } },
+                         { address: { contains: searchQuery, mode: 'insensitive' } },
+                         { city: { contains: searchQuery, mode: 'insensitive' } },
+                         { state: { contains: searchQuery, mode: 'insensitive' } },
+                    ],
+               },
+               skip,
+               take: ROOMS_PER_PAGE,
           })).reverse();
           
           return { success: true, rooms };

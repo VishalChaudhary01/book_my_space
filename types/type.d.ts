@@ -40,6 +40,11 @@ declare interface ICheckoutResponse {
      error?: string;
 }
 
+declare interface RoomListsProps {
+     page?: number;
+     searchQuery?: string;
+}
+
 declare interface IRoom {
      id: string;
      name: string;
