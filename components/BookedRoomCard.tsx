@@ -26,45 +26,29 @@ export function BookedRoomCard({ bookedRoom }: { bookedRoom: IBookedRoom }) {
      }
      
      return (
-          <div className="grid grid-cols-3 lg:grid-cols-4 md:grid-cols-4 w-full border border-purple-2 rounded-md p-2">
-               <div className="col-span-1 flex flex-col gap-2">
-                    <Link href={`/rooms/${bookedRoom.roomId}`} >
-                         <RoomImage src={bookedRoom.image} w={150} h={150}/>
-                    </Link>
-                    <div className="lg:hidden md:hidden flex items-center gap-2">
-                         <span className={`px-2 py-1 rounded-md text-gray-700 text-sm font-medium ${getStatusColor(bookedRoom.status)}`}>
-                              {getStatusName(bookedRoom.status)}
-                         </span>
-                         <Button onClick={() => {
-                              setOpenDialog(true);
-                         }}
-                         variant={"secondary"}
-                         disabled={bookedRoom.status === "CANCEL" || bookedRoom.status === "SUCCESS"}
-                         >
-                              Cancel
-                         </Button>
+          <div className="flex flex-col gap-2 md:flex-row md:justify-between md:gap-4 w-full border border-purple-2 bg-purple-2/15 rounded-md p-2">
+               <Link href={`/rooms/${bookedRoom.roomId}`} className="flex gap-8 group">
+                    <div className="hidden md:block w-[200px] h-[130px] overflow-hidden shrink-0">
+                         <RoomImage src={bookedRoom.image} />
                     </div>
-               </div>
-               <div className="col-span-2 flex flex-col text-sm md:text-base lg:text-base text-gray-700 px-4">
-                    <span className="font-semibold">{bookedRoom.name}</span>
-                    <span><span className="font-semibold">Total Payable Amount: </span>Rs.{bookedRoom.price}</span>
-                    {bookedRoom.status !== "CANCEL" && (
-                         <>
-                         <span><span className="font-semibold">Checkin Time: </span>{`${bookedRoom.checkInTime.toLocaleTimeString()} - ${bookedRoom.checkInTime.toLocaleDateString()}`}</span>
-                         <span><span className="font-semibold">Chekout Time: </span>{`${bookedRoom.checkOutTime.toLocaleTimeString()} - ${bookedRoom.checkOutTime.toLocaleDateString()}`}</span>
-                         </>
-                    )}
-               </div>
-               <div className="hidden lg:flex md:flex items-center justify-between gap-4 px-4">
-                    <div className={`px-2 py-1 rounded-md text-gray-700 text-sm font-medium ${getStatusColor(bookedRoom.status)}`}>
-                         <span>Status: </span>
-                         <span>{getStatusName(bookedRoom.status)}</span>
+                    <div className="flex flex-col text-sm lg:text-base text-gray-700">
+                         <h2 className="text-lg lg:text-xl font-semibold group-hover:underline">{bookedRoom.name}</h2>
+                         <span><span className="font-semibold">Total Payable Amount: </span>Rs.{bookedRoom.price}</span>
+                         {bookedRoom.status !== "CANCEL" && (
+                              <>
+                              <span><span className="font-semibold">Checkin Time: </span>{`${bookedRoom.checkInTime.toLocaleTimeString()} - ${bookedRoom.checkInTime.toLocaleDateString()}`}</span>
+                              <span><span className="font-semibold">Chekout Time: </span>{`${bookedRoom.checkOutTime.toLocaleTimeString()} - ${bookedRoom.checkOutTime.toLocaleDateString()}`}</span>
+                              </>
+                         )}
                     </div>
-                    <Button onClick={() => {
-                         setOpenDialog(true);
-                    }}
-                    variant={"secondary"}
+               </Link>
+               <div className="flex justify-between items-center gap-2 lg:w-1/3">
+                    <div className={`p-2 w-1/3 rounded-md text-gray-700 text-sm font-medium ${getStatusColor(bookedRoom.status)}`}>
+                         {`Status: ${getStatusName(bookedRoom.status)}`}
+                    </div>
+                    <Button onClick={() => setOpenDialog(true)}
                     disabled={bookedRoom.status === "CANCEL" || bookedRoom.status === "SUCCESS"}
+                    className="w-1/3"
                     >
                          Cancel
                     </Button>

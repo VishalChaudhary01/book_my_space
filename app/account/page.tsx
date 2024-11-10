@@ -11,8 +11,8 @@ export default async function Account() {
      const user = await prisma.user.findUnique({ where: { id: session.user.id } });
      if (!user) redirect("/signin");
      return (
-          <div className="flex-center flex-col gap-8 w-full">
-               <div className="w-full flex-center flex-col gap-4 font-semibold text-gray-700 bg-purple-2 p-6 shadow-md rounded-md">
+          <div className="flex flex-col gap-4 w-full">
+               <div className="w-full flex-center flex-col font-semibold text-gray-700 bg-purple-2 p-6 shadow-md rounded-md">
                     <h1 className="text-xl">{user.name}</h1>
                     <h3>{user.email}</h3>
                     <div className="flex flex-col items-center">
@@ -21,11 +21,11 @@ export default async function Account() {
                     </div>
                     <AccountButtons />
                </div>
-               <div className="flex justify-between gap-4 w-full text-2xl font-bold text-gray-700">
-                    <Link href="/rooms/booked" className="flex-center shadow-md rounded-md w-1/2 h-40 bg-purple-2">
-                         Booked Rooms 
+               <div className="flex flex-col md:flex-row gap-4 w-full text-2xl font-bold text-gray-700">
+                    <Link href="/rooms/booked" className="flex-center shadow-md rounded-md py-6 md:w-1/2 md:py-12 bg-purple-2">
+                         Booked Rooms
                     </Link>
-                    <Link href="/rooms/rented" className="flex-center shadow-md rounded-md w-1/2 h-40 bg-purple-2">
+                    <Link href="/rooms/rented" className="flex-center shadow-md rounded-md py-6 md:w-1/2 md:py-12 bg-purple-2">
                          Rented Rooms
                     </Link>
                </div>

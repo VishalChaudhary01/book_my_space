@@ -3,17 +3,12 @@ import { BookedRoomCard } from "@/components/BookedRoomCard";
 import { authOptions } from "@/lib/auth/authOptions";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { toast } from "sonner";
 
 export default async function BookedRooms() {
      const session = await getServerSession(authOptions);
      if (!session?.user) redirect("/signin");
 
-     const { bookedRooms, error } = await fetchAllBookedRooms();
-     if (error) {
-          console.error(error);
-          toast.error(error || "Error while fetching booked rooms");
-     }
+     const { bookedRooms } = await fetchAllBookedRooms();
      
      return (
           <div className="flex flex-col gap-4 relative">

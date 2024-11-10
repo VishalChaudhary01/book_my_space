@@ -41,8 +41,8 @@ export function BookingForm({ roomId }: { roomId: string }) {
 
      return (
           <Form {...form}>
-               <form onSubmit={form.handleSubmit(bookingHandler)} className="space-y-6 my-4 border-2 border-purple-2 min-w-96 rounded-md shadow-sm p-4 lg:px-8">
-                    <div className="flex-center text-lg font-bold text-gray-600">Select time in multiple of hour</div>
+               <form onSubmit={form.handleSubmit(bookingHandler)} className="space-y-6 my-4 border-2 border-purple-2 min-w-80 rounded-md shadow-sm p-4 lg:px-8">
+                    <div className="flex-center text-lg font-bold text-gray-700">Select time in multiple of hours!</div>
                     <FormField
                          control={form.control}
                          name="checkInTime"

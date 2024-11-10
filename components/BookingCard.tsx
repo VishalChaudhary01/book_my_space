@@ -22,7 +22,7 @@ export function BookingCard({ booking }: { booking: IBookedRoom}) {
      }
 
      return (
-          <div className="flex flex-col lg:flex-row w-full lg:items-center justify-between border border-purple-2 rounded-md shadow-sm text-base text-gray-700 px-4 py-2">
+          <div className="flex flex-col lg:flex-row w-full lg:items-center justify-between border border-purple-2 bg-purple-2/15 rounded-md shadow-sm text-base text-gray-700 px-4 py-2">
                <span className="font-semibold">{booking.user.name}</span>
                <div className="flex flex-col">
                <span><span className="font-semibold">Checkin Time: </span>{`${booking.checkInTime.toLocaleTimeString()} - ${booking.checkInTime.toLocaleDateString()}`}</span>

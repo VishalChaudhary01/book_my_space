@@ -25,16 +25,20 @@ export function RentedRoomCard({ room }: { room: IRoom }) {
      }
      
      return (
-          <div className="flex gap-4 border w-full h-40 border-purple-2 shadow-md rounded-md p-2">
-               <RoomImage src={room.image} w={200} h={200} />                    
-               <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between lg:w-3/4 text-base text-gray-700 px-4">
-                    <Link href={`/rooms/${room.id}`} className="flex flex-col text-sm lg:text-base md:text-base cursor-pointer">
-                         <span className="font-semibold">{room.name}</span>
+          <div className="flex flex-col gap-4 md:flex-row md:justify-between md:gap-4 w-full border border-purple-2 bg-purple-2/15 rounded-md p-2">
+               <Link href={`/rooms/${room.id}`} className="flex gap-8 group">
+                    <div className="hidden md:block w-[200px] h-[130px] shrink-0 overflow-hidden">
+                         <RoomImage src={room.image} /> 
+                    </div>
+                    <div className="flex flex-col text-sm lg:text-base cursor-pointer text-gray-700">
+                         <h2 className="text-lg lg:text-xl mb-2 font-semibold group-hover:underline">{room.name}</h2>
                          <span><span className="font-semibold">Price: </span>{`Rs.${room.pricePerHour}/hour, Rs.${room.pricePerDay}/day, Rs.${room.pricePerMonth}/month`}</span>
                          <span><span className="font-semibold">Size: </span>{room.lengthInFeet}&times;{room.widthInFeet} square feet</span>
-                    </Link>
-                    <div className="flex items-center py-4">
-                         <Button onClick={() => router.push(`/rooms/rented/${room.id}`)} variant="ghost">Totel Booking: {room.totalBooking}</Button>
+                    </div>
+               </Link>                   
+               <div className="flex justify-between md:flex-col md:justify-center lg:flex-row items-center gap-4 w-full md:w-1/3 text-base text-gray-700">
+                    <Button onClick={() => router.push(`/rooms/rented/${room.id}`)} variant="outline">Totel Booking: {room.totalBooking}</Button>
+                    <div className="flex gap-2">
                          <Button onClick={() => router.push(`/rooms/${room.id}/update`)} variant="ghost" size="icon"><Image src="/icons/update.svg" width={24} height={24} alt="update" /></Button>
                          <Button onClick={() => {
                               setOpenDialog(true);
