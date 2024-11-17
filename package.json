@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "prisma": {
-    "schema": "./lib/database/prisma/schema.prisma"
+    "schema": "./lib/database/prisma/schema.prisma",
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} ./lib/database/seed.ts"
   },
   "scripts": {
     "postinstall": "prisma generate",
@@ -56,6 +57,7 @@
     "eslint-config-next": "14.2.15",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   }
 }
