@@ -102,7 +102,7 @@ async function seedRooms() {
                await prisma.room.upsert({
                     where: { id: room.id },
                     update: {},
-                    create: { ...room },
+                    create: { ...room, createdAt: new Date() },
                })
           }
           console.log('✅ Room seed completed');

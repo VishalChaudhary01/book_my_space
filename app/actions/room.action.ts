@@ -5,6 +5,7 @@ import cloudinary from "@/lib/cloudinary";
 import prisma from "@/lib/database";
 import { getFormatedTime, handleError, isTimeMultipleOfHour } from "@/lib/utils";
 import { addRoomSchema, AddRoomSchemaType, bookRoomSchema, BookRoomSchemaType, updateRoomSchema, UpdateRoomSchemaType } from "@/types/room";
+import { Prisma } from "@prisma/client";
 import { getServerSession } from "next-auth";
 
 export async function uploadImage(image: any): Promise<IUploadImageResponse> {
@@ -70,9 +71,7 @@ export async function bookRoom(formData: BookRoomSchemaType): Promise<IResponse>
                where: { id: data.roomId },
                include: {
                     owner: {
-                         select: {
-                              bill: true,
-                         }
+                         select: { bill: true }
                     }
                }
           });
@@ -137,14 +136,10 @@ export async function fetchAllBookingByRoom(roomId: string): Promise<IFetchAllBo
                     roomId,
                     ownerId: userId,
                },
-               orderBy: {
-                    createdAt: 'desc',
-               },
+               orderBy: { createdAt: 'desc' },
                include: {
                     user: {
-                         select: {
-                              name: true,
-                         }
+                         select: { name: true }
                     }
                }
           });
@@ -215,19 +210,13 @@ export async function fetchAllBookedRooms(): Promise<IFetchAllBookedRoomsRespons
           const userId = session?.user?.id;
           if (!userId) throw new Error("Unauthorized user, Please login first!");
           const bookedRooms = await prisma.bookedRoom.findMany({
-               where: { 
-                    userId 
-               },
+               where: { userId },
                include: {
                     user: {
-                         select: {
-                              name: true
-                         }
+                         select: { name: true },
                     }
                },
-               orderBy: {
-                    createdAt: 'desc',
-               },
+               orderBy: { createdAt: 'desc' },
           });
           return { success: true, bookedRooms };
      } catch (error) {
@@ -236,27 +225,33 @@ export async function fetchAllBookedRooms(): Promise<IFetchAllBookedRoomsRespons
 }
 
 // Fetch all rooms
-export async function fetchAllRooms({ searchQuery = "", page = DEFAULT_PAGE }: RoomListsProps): Promise<IFetchRoomsResponse> {
+export async function fetchAllRooms({ search = "", page = DEFAULT_PAGE }: RoomListsProps): Promise<IFetchRoomsResponse> {
      const skip = (Number(page) - 1) * ROOMS_PER_PAGE;
+     const maxBillLimit = Number(process.env.MAX_BILL_LIMIT) || 1000;
+
+     const filters: Prisma.RoomWhereInput = {
+          owner: {
+               bill: { lte: maxBillLimit }
+          },
+          OR: [
+               { name: { contains: search, mode: 'insensitive' } },
+               { address: { contains: search, mode: 'insensitive' } },
+               { city: { contains: search, mode: 'insensitive' } },
+               { state: { contains: search, mode: 'insensitive' } },
+          ], 
+     };
+     
      try {
-          const maxBillLimit = Number(process.env.MAX_BILL_LIMIT) || 1000;
-          const rooms = (await prisma.room.findMany({
-               where: {
-                    owner: {
-                         bill: { lte: maxBillLimit }
-                    },
-                    OR: [
-                         { name: { contains: searchQuery, mode: 'insensitive' } },
-                         { address: { contains: searchQuery, mode: 'insensitive' } },
-                         { city: { contains: searchQuery, mode: 'insensitive' } },
-                         { state: { contains: searchQuery, mode: 'insensitive' } },
-                    ],
-               },
-               skip,
-               take: ROOMS_PER_PAGE,
-          })).reverse();
-          
-          return { success: true, rooms };
+          const [rooms, totalRooms] = await Promise.all([
+               prisma.room.findMany({
+                    where: filters,
+                    orderBy: { createdAt: 'desc'},
+                    skip,
+                    take: ROOMS_PER_PAGE,
+               }),
+               prisma.room.count({ where: filters }),
+          ]);
+          return { success: true, rooms, totalRooms };
      } catch (error) {
           return handleError(error);
      }
@@ -266,9 +261,7 @@ export async function fetchAllRooms({ searchQuery = "", page = DEFAULT_PAGE }: R
 export async function fetchRoomById(roomId: string): Promise<IFetchRoomByIdResponse> {
      try {
           const room = await prisma.room.findFirst({
-               where: {
-                    id: roomId,
-               }
+               where: { id: roomId }
           });
           return { success: true, room: room }
      } catch (error) {
@@ -282,11 +275,10 @@ export async function fetchRoomByOwner(): Promise<IFetchRoomsResponse> {
      try {
           const userId = session?.user?.id;
           if (!userId) throw new Error("Unauthorized user, Please login first!");
-          const rooms = (await prisma.room.findMany({
-               where: {
-                    ownerId: userId
-               }
-          })).reverse();
+          const rooms = await prisma.room.findMany({
+               where: { ownerId: userId },
+               orderBy: { createdAt: 'desc' },
+          });
           return { success: true, rooms }
      } catch (error) {
           return handleError(error);

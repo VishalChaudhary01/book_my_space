@@ -19,6 +19,7 @@ declare interface IFetchAllBookedRoomsResponse {
 declare interface IFetchRoomsResponse {
      success: boolean;
      rooms?: IRoom[];
+     totalRooms?: number;
      error?: string;
 }
 
@@ -42,7 +43,7 @@ declare interface ICheckoutResponse {
 
 declare interface RoomListsProps {
      page?: number;
-     searchQuery?: string;
+     search?: string;
 }
 
 declare interface IRoom {
@@ -61,6 +62,7 @@ declare interface IRoom {
      pin: number;
      description: string | null;
      ownerId: string | null;
+     createdAt: Date;
 }
 
 declare interface IBookedRoom {
@@ -79,7 +81,12 @@ declare interface IBookedRoom {
     }
 }
 
-interface UpdateStatusProps {
+declare interface UpdateStatusProps {
      bookingId: string;
      status: "BOOKED" | "CANCEL" | "SUCCESS";
+}
+
+declare interface SearchParamsType {
+     page?: number;
+     search?: string;
 }

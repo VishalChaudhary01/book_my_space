@@ -49,6 +49,7 @@ model Room {
   ownerId      String?
   totalBooking Int          @default(0)
   bookedRoom   BookedRoom[]
+  createdAt    DateTime     @default(now())
 }
 
 model BookedRoom {
