@@ -8,7 +8,7 @@ export default async function AuthLayout({ children }: Readonly<{ children: Reac
 
      return (
           <div className="flex-center w-full">
-               <main className="border-2 w-96 p-8 border-purple-2 rounded-md shadow-md">
+               <main className="border-2 w-96 p-8 border-purple-2 dark:border-dark-2 rounded-md shadow-md">
                     {children}
                </main>
           </div>

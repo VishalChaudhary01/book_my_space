@@ -5,7 +5,7 @@
 /* ========================================== TAILWIND STYLES */
 @layer utilities {
      .ghost-link {
-          @apply hover:bg-purple-2 hover:text-purple-1 px-2 py-1 rounded-md ease-in-out duration-300;
+          @apply hover:bg-purple-2 hover:text-purple-4 dark:hover:bg-dark-1 dark:hover:text-dark-4 px-2 py-1 text-base rounded-md ease-in-out duration-300;
      }
      .flex-center {
           @apply flex justify-center items-center gap-2 lg:gap-4
@@ -14,7 +14,22 @@
           @apply flex justify-between items-center gap-2 lg:gap-4
      }
      .form-label {
-          @apply text-base font-medium text-gray-700
+          @apply text-base font-medium text-black/90 dark:text-dark-1
+     }
+     .h1 {
+          @apply text-2xl md:text-4xl lg:text-5xl font-bold md:font-extrabold z-50 text-center text-black/90 dark:text-dark-1
+     }
+     .h2 {
+          @apply text-lg md:text-2xl lg:text-3xl font-semibold first-letter:uppercase text-center text-black/90 dark:text-dark-1
+     }
+     .h3 {
+          @apply text-base md:text-xl font-semibold text-black/90 dark:text-dark-1
+     }
+     .h4 {
+          @apply text-base md:text-lg md:font-medium text-black/90 dark:text-dark-1
+     }
+     .p {
+          @apply text-sm font-normal text-black/90 dark:text-dark-1
      }
 }
 @layer base {

@@ -36,6 +36,7 @@ export function SignupForm() {
 
      return (
           <>
+               <h2 className="h2 my-6">Most Welcome!</h2>
                <Form {...form}>
                     <form onSubmit={form.handleSubmit(signupHandler)} className="flex flex-col gap-4">
                          <FormField

@@ -40,6 +40,7 @@ export function SigninForm() {
 
      return (
      <>
+          <h2 className="h2 my-6">Welcome back!</h2>
           <Form {...form}>
                <form onSubmit={form.handleSubmit(signinHandler)} className="flex flex-col gap-4">
                     <FormField

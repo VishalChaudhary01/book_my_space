@@ -2,9 +2,9 @@
 import React, { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import Image from "next/image";
 import useSetQueryParams from "@/hooks/useSetQueryParams";
 import { DEFAULT_PAGE } from "@/config";
+import { Search } from "lucide-react";
 
 export const SearchBar = ({ searchParams }: { searchParams?: SearchParamsType }) => {
   const [search, setSearch] = useState(searchParams?.search ?? "");
@@ -15,9 +15,9 @@ export const SearchBar = ({ searchParams }: { searchParams?: SearchParamsType })
   };
 
   return (
-    <section className="flex justify-center items-center">
+    <section className="flex justify-center items-center md:w-96">
       <Input
-        className="focus-visible:ring-blue-600 rounded-l-full w-full md:w-2/5"
+        className="border border-purple-2 dark:border-dark-2 rounded-l-full"
         placeholder="Search rooms by name or address"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
@@ -25,9 +25,9 @@ export const SearchBar = ({ searchParams }: { searchParams?: SearchParamsType })
       <Button
         variant="ghost"
         onClick={handleSearch}
-        className="border border-l-0 rounded-r-full shadow-sm"
+        className="border border-l-0 border-purple-2 dark:border-dark-2 dark:hover:bg-dark-2 rounded-r-full shadow-sm"
       >
-        <Image src="/icons/search.svg" width={24} height={24} alt="search" />
+        <Search width={24} height={24} className="dark:text-dark-1/50"/>
       </Button>
     </section>
   );

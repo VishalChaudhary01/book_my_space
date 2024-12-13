@@ -10,8 +10,7 @@ export function GoogleOauthButton({ label }: { label: string }) {
                e.preventDefault();
                signIn("google")
            }}
-           variant={"outline"}
-           className="w-full flex-center gap-4">
+           className="w-full flex-center gap-4 bg-dark-2">
                {label}
                <Image src={'/icons/google.svg'} alt="google" width={24} height={24} />
           </Button>

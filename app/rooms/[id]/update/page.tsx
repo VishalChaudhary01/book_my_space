@@ -14,7 +14,7 @@ export default async function UpdateRoom({ params }: { params: { id: string } })
                {data?.room ? (
                     <RoomForm roomId={params.id} room={data.room} />
                ) : (
-                    <div className="flex-center text-xl font-bold text-gray-600">
+                    <div className="h3">
                          Room Not found
                     </div>
                )}

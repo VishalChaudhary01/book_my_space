@@ -4,14 +4,14 @@ import { Button } from "@/components/ui/button";
 
 export default function Custom404Page() {
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-8 mt-12">
-        <h1 className="text-4xl font-bold tracking-tight text-gray-700 sm:text-6xl mb-4">
+    <div className="flex flex-col items-center container mx-auto px-4 py-8 mt-12">
+        <h2 className="h2 mb-4">
           404 - Page Not Found
-        </h1>
-        <p className="text-xl text-gray-600 mb-6 max-w-md mx-auto">
+        </h2>
+        <h4 className="h4 mb-6 max-w-md mx-auto text-center">
           We are sorry, but we could not find the page you are looking for.
-        </p>
-        <p className="text-base text-gray-500 mb-8 max-w-lg mx-auto">
+        </h4>
+        <p className="p mb-8 max-w-lg mx-auto text-center">
           The page may have been moved, removed, renamed, or might never have
           existed.
         </p>

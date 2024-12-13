@@ -17,13 +17,13 @@ export const PaginationBar = ({ searchParams, totalRooms }: { searchParams?: Sea
      };
 
      return (
-          <Pagination className="bg-purple-2 py-2.5 px-4 rounded-xl shadow-sm">
+          <Pagination className="bg-purple-3/10 dark:bg-dark-3 border dark:border-dark-2 border-purple-2 py-2.5 px-4 rounded-xl shadow-sm">
                <PaginationContent>
                <PaginationItem>
                     <Button variant="secondary" onClick={() => handlePageChange(Math.max(1, page - 1))} disabled={page === DEFAULT_PAGE}>Previous</Button>
                </PaginationItem>
                <PaginationItem>
-                    <PaginationLink isActive>
+                    <PaginationLink isActive className="dark:bg-dark-1 dark:text-dark-4">
                          {page}
                     </PaginationLink>
                </PaginationItem>

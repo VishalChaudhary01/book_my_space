@@ -1,21 +1,15 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
 import { Toaster } from 'sonner'
 import { Header } from "@/components/Header";
-import { Providers } from "@/providers/auth.provider";
-import Footer from "@/components/Footer";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+import { Footer } from "@/components/Footer";
+import { Providers } from "./providers";
+import { Poppins } from 'next/font/google';
+import "./globals.css";
+ 
+const poppins = Poppins({
+  weight: ['200', '400'],
+  subsets: ['latin'],
+})
 
 export const metadata: Metadata = {
   title: "Book My Space",
@@ -30,13 +24,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${poppins.className} antialiased dark:bg-dark-4 bg-white flex flex-col`}
       >
         <Providers>
           <Toaster richColors />
-          <div className="m-4 lg:mx-8">
+          <div className="flex flex-col gap-4 my-4 min-h-screen">
             <Header />
-            <main className="min-h-screen">
+            <main>
               {children}
             </main>
           </div>

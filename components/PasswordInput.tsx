@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Input } from "./ui/input";
-import Image from "next/image";
+import { EyeIcon, EyeOff } from "lucide-react";
 
 interface PasswordInputProps {
      field: any;
@@ -18,10 +18,9 @@ export function PasswordInput({ field, placeholder }: PasswordInputProps) {
                     type={showPassword ? "text" : "password"}
                     placeholder={placeholder || "*******"}
                />
-               <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-0 translate-y-1/4">
-                    <Image src={showPassword ? "/icons/eye.svg" : "/icons/eyeoff.svg"} alt="show password" width={24} height={24} />
+               <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-0 translate-y-1/4 text-black/90 dark:text-dark-1/50">
+                    {showPassword ? <EyeIcon /> : <EyeOff />}
                </button>
-
           </div>
      )
 }

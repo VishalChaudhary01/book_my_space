@@ -80,8 +80,8 @@ export function RoomForm({ room, roomId }: RoomFormProps) {
      return (
           <div className="flex-center">
           <Form {...form}>
-               <form onSubmit={form.handleSubmit(addRoomHandler)} className="space-y-4 w-full md:w-3/5 border-2 border-purple-2 rounded-md shadow-md p-6">
-                    <div className="flex-center border border-purple-2 p-4">
+               <form onSubmit={form.handleSubmit(addRoomHandler)} className="space-y-4 w-[340px] md:w-full md:max-w-2xl border-2 border-purple-2 dark:border-dark-2 rounded-lg shadow-md p-4">
+                    <div className="flex-center border border-purple-2 dark:border-dark-2 p-4">
                          <MediaUploader image={image} setImage={setImage} publicId={publicId} />
                     </div>
                     {addRoomFormElements.map((formElement) => (

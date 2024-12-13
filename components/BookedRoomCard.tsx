@@ -26,24 +26,24 @@ export function BookedRoomCard({ bookedRoom }: { bookedRoom: IBookedRoom }) {
      }
      
      return (
-          <div className="flex flex-col gap-2 md:flex-row md:justify-between md:gap-4 w-full border border-purple-2 bg-purple-2/15 rounded-md p-2">
+          <div className="flex flex-col gap-2 md:flex-row md:justify-between md:gap-4 w-[340px] md:w-full md:max-w-6xl border border-purple-2 dark:border-dark-2 bg-purple-3/10 dark:bg-dark-3 rounded-md p-4">
                <Link href={`/rooms/${bookedRoom.roomId}`} className="flex gap-8 group">
                     <div className="hidden md:block w-[200px] h-[130px] overflow-hidden shrink-0">
                          <RoomImage src={bookedRoom.image} />
                     </div>
-                    <div className="flex flex-col text-sm lg:text-base text-gray-700">
-                         <h2 className="text-lg lg:text-xl font-semibold group-hover:underline">{bookedRoom.name}</h2>
-                         <span><span className="font-semibold">Total Payable Amount: </span>Rs.{bookedRoom.price}</span>
+                    <div className="flex flex-col p">
+                         <h4 className="h4">{bookedRoom.name}</h4>
+                         <span><span className="text-base font-medium">Total Payable Amount: </span>Rs.{bookedRoom.price}</span>
                          {bookedRoom.status !== "CANCEL" && (
                               <>
-                              <span><span className="font-semibold">Checkin Time: </span>{`${bookedRoom.checkInTime.toLocaleTimeString()} - ${bookedRoom.checkInTime.toLocaleDateString()}`}</span>
-                              <span><span className="font-semibold">Chekout Time: </span>{`${bookedRoom.checkOutTime.toLocaleTimeString()} - ${bookedRoom.checkOutTime.toLocaleDateString()}`}</span>
+                              <span><span className="text-base font-medium">Checkin Time: </span>{`${bookedRoom.checkInTime.toLocaleTimeString()} - ${bookedRoom.checkInTime.toLocaleDateString()}`}</span>
+                              <span><span className="text-base font-medium">Chekout Time: </span>{`${bookedRoom.checkOutTime.toLocaleTimeString()} - ${bookedRoom.checkOutTime.toLocaleDateString()}`}</span>
                               </>
                          )}
                     </div>
                </Link>
-               <div className="flex justify-between items-center gap-2 lg:w-1/3">
-                    <div className={`p-2 w-1/3 rounded-md text-gray-700 text-sm font-medium ${getStatusColor(bookedRoom.status)}`}>
+               <div className="flex justify-between md:justify-end items-center gap-2">
+                    <div className={`p-2 rounded-md text-black text-sm font-medium ${getStatusColor(bookedRoom.status)}`}>
                          {`Status: ${getStatusName(bookedRoom.status)}`}
                     </div>
                     <Button onClick={() => setOpenDialog(true)}

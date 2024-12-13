@@ -22,14 +22,14 @@ export function BookingCard({ booking }: { booking: IBookedRoom}) {
      }
 
      return (
-          <div className="flex flex-col lg:flex-row w-full lg:items-center justify-between border border-purple-2 bg-purple-2/15 rounded-md shadow-sm text-base text-gray-700 px-4 py-2">
-               <span className="font-semibold">{booking.user.name}</span>
-               <div className="flex flex-col">
-               <span><span className="font-semibold">Checkin Time: </span>{`${booking.checkInTime.toLocaleTimeString()} - ${booking.checkInTime.toLocaleDateString()}`}</span>
-               <span><span className="font-semibold">Chekout Time: </span>{`${booking.checkOutTime.toLocaleTimeString()} - ${booking.checkOutTime.toLocaleDateString()}`}</span>
+          <div className="flex flex-col lg:flex-row w-full lg:items-center justify-between border border-purple-2 dark:border-dark-2 bg-purple-3/10 dark:bg-dark-3 rounded-lg shadow-sm px-4 py-2">
+               <span className="text-base font-medium">{booking.user.name}</span>
+               <div className="flex flex-col p">
+                    <span><span className="text-base font-medium">Checkin Time: </span>{`${booking.checkInTime.toLocaleTimeString()} - ${booking.checkInTime.toLocaleDateString()}`}</span>
+                    <span><span className="text-base font-medium">Chekout Time: </span>{`${booking.checkOutTime.toLocaleTimeString()} - ${booking.checkOutTime.toLocaleDateString()}`}</span>
                </div>
-               <div className="flex flex-col">
-                    <span><span className="font-semibold">Total Payable Amount </span>Rs.{booking.price}</span>
+               <div className="flex flex-col p">
+                    <span><span className="text-base font-medium">Total Payable Amount </span>Rs.{booking.price}</span>
                </div>
                <Button onClick={() => {
                     setOpenDialog(true)

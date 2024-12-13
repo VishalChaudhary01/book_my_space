@@ -11,10 +11,10 @@ export default async function BookedRooms() {
      const { bookedRooms } = await fetchAllBookedRooms();
      
      return (
-          <div className="flex flex-col gap-4 relative">
-               <div className="flex justify-center my-4 lg:text-2xl text-xl font-bold text-gray-700">
+          <div className="flex flex-col gap-6 relative md:container md:mx-auto px-4">
+               <h2 className="flex items-center justify-center mt-6 h2">
                     Your Booked Rooms are here
-               </div>
+               </h2>
                <div className="flex flex-col items-center gap-4">
                     <div className="flex-center flex-col w-full">
                          {bookedRooms?.length ? (

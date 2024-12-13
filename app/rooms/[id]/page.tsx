@@ -3,44 +3,46 @@ import { BookingForm } from "@/components/BookingForm";
 import { RoomImage } from "@/components/RoomImage";
 
 export default async function RoomDetails({ params }: { params: { id: string } }) {
-     const { room } = await fetchRoomById(params.id);
+  const { room } = await fetchRoomById(params.id);
 
-     return (
-          <>
-               {room ? (
-                    <div className="flex flex-col p-4 w-full text-gray-600">
-                         <div className="text-2xl lg:text-3xl font-bold mb-2">
-                              {room.name}
-                         </div>
-                         <div className="flex flex-col text-base lg:text-lg font-medium">
-                              <div> 
-                                   {`Price: Rs.${room.pricePerHour}/hour, Rs.${room.pricePerDay}/day, Rs.${room.pricePerMonth}/month`}
-                              </div>
-                              <div>Size: {room.lengthInFeet}&times;{room.widthInFeet} square feet</div>
-                         </div>
-                         <div className="flex flex-col md:flex-row gap-4">
-                              <div className="w-full md:w-1/2 h-fit overflow-hidden shrink-0">
-                                   <RoomImage src={room.image} />
-                              </div>
-                              <div className="md:w-1/2">
-                                   <div className="flex-center text-2xl font-bold bg-purple-2 px-4 py-2 rounded-md text-gray-600">
-                                        Book Now
-                                   </div>
-                                   <BookingForm roomId={room.id} />
-                              </div>
-                         </div>
-                         <div className="text-base font-medium text-gray-600 py-2">
-                              <span className="text-xl font-bold">Addresss: </span>
-                              {room.address}, {room.city}, {room.state}, {room.pin}
-                         </div>
-                         <div>
-                              <span className="text-xl font-bold">Description: </span>
-                              {room.description}
-                         </div>
-                    </div>
-               ) : (
-                    <div className="flex-center text-2xl font-semibold text-gray-600">Room not found</div>
-               )}
-          </>
-     )
+  return (
+    <div className="container mx-auto">
+      {room ? (
+        <div className="flex flex-col p-4 w-full ">
+          <h2 className="text-lg md:text-2xl lg:text-3xl font-semibold first-letter:uppercase text-black/90 dark:text-dark-1">{room.name}</h2>
+          <div className="flex flex-col text-base lg:text-lg font-medium">
+            <h4 className="h4">
+              {`Price: Rs.${room.pricePerHour}/hour, Rs.${room.pricePerDay}/day, Rs.${room.pricePerMonth}/month`}
+            </h4>
+            <h4 className="h4">
+              Size: {room.lengthInFeet}&times;{room.widthInFeet} square feet
+            </h4>
+          </div>
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="w-full md:w-1/2 h-fit overflow-hidden shrink-0">
+              <RoomImage src={room.image} />
+            </div>
+            <div className="md:w-1/2">
+              <div className="h2 bg-purple-2 dark:bg-dark-2 px-4 py-2 rounded-md">
+                Book Now
+              </div>
+              <BookingForm roomId={room.id} />
+            </div>
+          </div>
+          <p className="p py-2">
+            <span className="text-lg font-semibold">Addresss: </span>
+            {room.address}, {room.city}, {room.state}, {room.pin}
+          </p>
+          <p className="p">
+            <span className="text-xl font-bold">Description: </span>
+            {room.description}
+          </p>
+        </div>
+      ) : (
+        <div className="h2">
+          Room not found
+        </div>
+      )}
+    </div>
+  );
 }

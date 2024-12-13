@@ -18,20 +18,22 @@ export default async function RentedRooms() {
      }
 
      return (
-          <div className="flex flex-col gap-4 relative">
-               <Link href="/rooms/add" className="absolute right-0 top-4">
-                    <Button> Add New Room </Button>
-               </Link>
-               <div className="flex md:justify-center my-4 md:text-2xl text-lg font-bold text-gray-700">
-                    Your all Rented Room are here
+          <div className="flex flex-col items-center gap-6 w-full md:container md:mx-auto px-4 my-6">
+               <div className="relative w-full max-w-6xl">
+                    <Link href="/rooms/add" className="absolute right-0 top-0">
+                         <Button> Add New Room </Button>
+                    </Link>
+                    <h2 className="h2 w-1/2 md:w-full">
+                         Your all Rented Room are here
+                    </h2>
                </div>
-               <div className="flex flex-col items-center gap-4">
+               <div className="flex flex-col items-center gap-4 w-full">
                     {rooms?.length ? (
                          rooms.map((room) => (
                               <RentedRoomCard key={room.id} room={room} />
                          ))
                     ) : (
-                         <div className="text-xl font-bold text-red-700">
+                         <div className="h2">
                               You don&apos;t have any rented rooms currently!
                          </div>
                     )}
