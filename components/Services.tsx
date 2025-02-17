@@ -13,7 +13,7 @@ export function Services() {
         <h2 className="flex-center h2">
           Our unique and affordable office solutions
         </h2>
-        <div className="h-[375px] w-[360px] md:w-[750px] md:max-w-5xl lg:w-[1024px] lg:max-w-7xl rounded-md flex flex-col antialiased bg-white dark:bg-dark-4 items-center relative overflow-hidden">
+        <div className="h-[375px] w-full max-w-[360px] sm:max-w-[600px] md:max-w-[750px] lg:max-w-[1024px] xl:max-w-7xl rounded-md flex flex-col antialiased bg-white dark:bg-dark-4 items-center relative overflow-hidden">
           <InfiniteMovingCards
             services={services}
             direction="left"
