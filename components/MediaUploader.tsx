@@ -1,15 +1,9 @@
 "use client";
-import { CldUploadWidget } from "next-cloudinary";
 import { toast } from "sonner";
-import { Button } from "./ui/button";
-import { RoomImage } from "./RoomImage";
+import { CldUploadWidget } from "next-cloudinary";
 import { File, Plus, X } from "lucide-react";
-
-type MediaUploaderProps = {
-  image: any;
-  setImage: React.Dispatch<any>;
-  publicId?: string;
-};
+import { RoomImage } from "./RoomImage";
+import { Button } from "./ui/button";
 
 export function MediaUploader({
   image,
@@ -27,6 +21,7 @@ export function MediaUploader({
   function handleRemoveImage() {
     setImage(null);
   }
+
   return (
     <>
       {!publicId ? (
@@ -43,7 +38,11 @@ export function MediaUploader({
             <div className="w-full">
               {image?.display_name ? (
                 <div className="flex-center">
-                  <File width={24} height={24} className="text-black dark:text-dark-1"/>
+                  <File
+                    width={24}
+                    height={24}
+                    className="text-black dark:text-dark-1"
+                  />
                   <p className="text-sm font-medium">
                     {image.display_name}.{image.format}
                   </p>
@@ -61,7 +60,12 @@ export function MediaUploader({
                   onClick={() => open()}
                   className="cursor-pointer flex flex-col w-full gap-2 justify-center items-center"
                 >
-                  <Button variant="ghost" type="button" size="icon" className="dark:hover:bg-dark-3">
+                  <Button
+                    variant="ghost"
+                    type="button"
+                    size="icon"
+                    className="dark:hover:bg-dark-3"
+                  >
                     <Plus width={24} height={24} />
                   </Button>
                   <p>Click here to upload image</p>

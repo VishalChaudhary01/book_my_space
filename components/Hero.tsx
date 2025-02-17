@@ -1,8 +1,8 @@
-import { Button } from "./ui/button";
 import Link from "next/link";
+import Image from "next/image";
+import { Button } from "./ui/button";
 import { Spotlight } from "./ui/spotlight";
 import { TextGenerateEffect } from "./ui/text-generate-effect";
-import Image from "next/image";
 
 export function Hero() {
   return (

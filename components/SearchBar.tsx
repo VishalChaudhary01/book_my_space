@@ -1,12 +1,12 @@
 "use client";
 import React, { useState } from "react";
+import { Search } from "lucide-react";
+import { DEFAULT_PAGE } from "@/config";
+import useSetQueryParams from "@/hooks/useSetQueryParams";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import useSetQueryParams from "@/hooks/useSetQueryParams";
-import { DEFAULT_PAGE } from "@/config";
-import { Search } from "lucide-react";
 
-export const SearchBar = ({ searchParams }: { searchParams?: SearchParamsType }) => {
+export const SearchBar = ({ searchParams }: SearchBarProps) => {
   const [search, setSearch] = useState(searchParams?.search ?? "");
   const setQueryParams = useSetQueryParams();
 
@@ -27,7 +27,7 @@ export const SearchBar = ({ searchParams }: { searchParams?: SearchParamsType })
         onClick={handleSearch}
         className="border border-l-0 border-purple-2 dark:border-dark-2 dark:hover:bg-dark-2 rounded-r-full shadow-sm"
       >
-        <Search width={24} height={24} className="dark:text-dark-1/50"/>
+        <Search width={24} height={24} className="dark:text-dark-1/50" />
       </Button>
     </section>
   );

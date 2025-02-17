@@ -1,10 +1,10 @@
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth/authOptions";
 import { fetchAllBookingByRoom } from "@/app/actions/room.action";
 import { BookingCard } from "@/components/BookingCard";
-import { authOptions } from "@/lib/auth/authOptions";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 
-export default async function Bookings({ params }: { params: { id: string } }) {
+export default async function Bookings({ params }: BookingsProps) {
   const session = await getServerSession(authOptions);
   if (!session?.user) redirect("/signin");
 
@@ -15,7 +15,10 @@ export default async function Bookings({ params }: { params: { id: string } }) {
       {bookingList?.length ? (
         <div className="w-[340px] md:w-full md:max-w-6xl space-y-6">
           <div className="h2">
-            All Bookings on <span className="dark:text-purple-3/90 text-purple-4/90">{bookingList[0].name}</span>
+            All Bookings on{" "}
+            <span className="dark:text-purple-3/90 text-purple-4/90">
+              {bookingList[0].name}
+            </span>
           </div>
           {bookingList?.map((booking) => (
             <BookingCard key={booking.id} booking={booking} />

@@ -2,14 +2,16 @@ import { fetchRoomById } from "@/app/actions/room.action";
 import { BookingForm } from "@/components/BookingForm";
 import { RoomImage } from "@/components/RoomImage";
 
-export default async function RoomDetails({ params }: { params: { id: string } }) {
+export default async function RoomDetails({ params }: RoomDetailsProps) {
   const { room } = await fetchRoomById(params.id);
 
   return (
     <div className="container mx-auto">
       {room ? (
         <div className="flex flex-col p-4 w-full ">
-          <h2 className="text-lg md:text-2xl lg:text-3xl font-semibold first-letter:uppercase text-black/90 dark:text-dark-1">{room.name}</h2>
+          <h2 className="text-lg md:text-2xl lg:text-3xl font-semibold first-letter:uppercase text-black/90 dark:text-dark-1">
+            {room.name}
+          </h2>
           <div className="flex flex-col text-base lg:text-lg font-medium">
             <h4 className="h4">
               {`Price: Rs.${room.pricePerHour}/hour, Rs.${room.pricePerDay}/day, Rs.${room.pricePerMonth}/month`}
@@ -39,9 +41,7 @@ export default async function RoomDetails({ params }: { params: { id: string } }
           </p>
         </div>
       ) : (
-        <div className="h2">
-          Room not found
-        </div>
+        <div className="h2">Room not found</div>
       )}
     </div>
   );

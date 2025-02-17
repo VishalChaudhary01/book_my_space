@@ -1,10 +1,10 @@
 "use client";
-import { Label } from "@radix-ui/react-label";
+import { useState } from "react";
+import { toast } from "sonner";
+import { forgetPassword } from "@/app/actions/auth.action";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { useState } from "react";
-import { forgetPassword } from "@/app/actions/auth.action";
-import { toast } from "sonner";
+import { Label } from "@radix-ui/react-label";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 
 export function ForgetPassword() {
@@ -27,10 +27,8 @@ export function ForgetPassword() {
   }
 
   return (
-    <div>
-      <h2 className="flex-center text-2xl text-gray-600 font-bold mb-4">
-        Forget Password?
-      </h2>
+    <>
+      <h2 className="text-center text-2xl font-bold mb-4">Forget Password?</h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-2">
         <Label htmlFor="email" className="form-label">
           Email
@@ -49,7 +47,14 @@ export function ForgetPassword() {
           {isSubmitting ? "Please wait..." : "Submit"}
         </Button>
       </form>
-      {openDialog && <ConfirmationDialog open={openDialog} setOpen={setOpenDialog} title="A link has been send to your email address." desc="Go to your email address and click the link to generate new password." />}
-    </div>
+      {openDialog && (
+        <ConfirmationDialog
+          open={openDialog}
+          setOpen={setOpenDialog}
+          title="A link has been send to your email address."
+          desc="Go to your email address and click the link to generate new password."
+        />
+      )}
+    </>
   );
 }

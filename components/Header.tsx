@@ -1,13 +1,13 @@
 "use client";
 import Link from "next/link";
+import { useState } from "react";
+import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
+import { AlignRight, CircleUserRound, Moon, Sun } from "lucide-react";
 import { sidebarLinks } from "@/config";
 import { Button } from "./ui/button";
-import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { AlignRight, CircleUserRound, Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
 import {
   Sheet,
   SheetContent,
@@ -65,7 +65,7 @@ export function Header() {
             <CircleUserRound width={24} height={24} />
           </Button>
           <Button
-          variant="link"
+            variant="link"
             onClick={() => signOut()}
             className="hidden md:block "
           >

@@ -1,20 +1,26 @@
-import { ResetPassword } from "@/components/ResetPassword";
 import prisma from "@/lib/database";
-import { isTokenExpiredUtil } from "@/lib/utils";
 import { notFound } from "next/navigation";
+import { isTokenExpiredUtil } from "@/lib/utils";
+import { ResetPassword } from "@/components/ResetPassword";
 
-export default async function ResetPasswordPage({ params: { token } }: { params: { token: string } }) {
-     const verificationToken = await prisma.verificationToken.findFirst({
-          where: { token }
-     });
-     if (!verificationToken) notFound();
+export default async function ResetPasswordPage({
+  params: { token },
+}: ResetPasswordPageProps) {
+  const verificationToken = await prisma.verificationToken.findFirst({
+    where: { token: token },
+  });
 
-     if (isTokenExpiredUtil(verificationToken.createdAt)) return <h1>Link has been expired!</h1>
+  if (!verificationToken) notFound();
 
-     const user = await prisma.user.findFirst({
-          where: { id: verificationToken.id }
-     });
-     if (!user) notFound();
+  if (isTokenExpiredUtil(verificationToken.createdAt)) {
+    return <h1>Link has been expired!</h1>;
+  }
 
-     return <ResetPassword token={token} />
+  const user = await prisma.user.findFirst({
+    where: { id: verificationToken.id },
+  });
+
+  if (!user) notFound();
+
+  return <ResetPassword token={token} />;
 }

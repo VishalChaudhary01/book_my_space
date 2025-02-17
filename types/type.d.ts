@@ -1,92 +1,92 @@
 declare interface IResponse {
-     success: boolean;
-     message?: string;
-     error?: string;
+  success: boolean;
+  message?: string;
+  error?: string;
 }
 
 declare interface IFetchAllBookingByRoomResponse {
-     success: boolean;
-     bookingList?: IBookedRoom[];
-     error?: string;
+  success: boolean;
+  bookingList?: IBookedRoom[];
+  error?: string;
 }
 
 declare interface IFetchAllBookedRoomsResponse {
-     success: boolean;
-     bookedRooms?: IBookedRoom[];
-     error?: string;
+  success: boolean;
+  bookedRooms?: IBookedRoom[];
+  error?: string;
 }
 
 declare interface IFetchRoomsResponse {
-     success: boolean;
-     rooms?: IRoom[];
-     totalRooms?: number;
-     error?: string;
+  success: boolean;
+  rooms?: IRoom[];
+  totalRooms?: number;
+  error?: string;
 }
 
 declare interface IFetchRoomByIdResponse {
-     success: boolean;
-     room?: IRoom | null;
-     error?: string;
+  success: boolean;
+  room?: IRoom | null;
+  error?: string;
 }
 
 declare interface IUploadImageResponse {
-     success: boolean;
-     publicId?: string;
-     error?: string;
+  success: boolean;
+  publicId?: string;
+  error?: string;
 }
 
 declare interface ICheckoutResponse {
-     success: boolean;
-     url?: string;
-     error?: string;
+  success: boolean;
+  url?: string;
+  error?: string;
 }
 
 declare interface RoomListsProps {
-     page?: number;
-     search?: string;
+  page?: number;
+  search?: string;
 }
 
 declare interface IRoom {
-     id: string;
-     name: string;
-     image: string;
-     pricePerHour: number;
-     pricePerDay: number;
-     pricePerMonth: number;
-     lengthInFeet: number;
-     widthInFeet: number;
-     totalBooking?: number;
-     address: string;
-     city: string;
-     state: string;
-     pin: number;
-     description: string | null;
-     ownerId: string | null;
-     createdAt: Date;
+  id: string;
+  name: string;
+  image: string;
+  pricePerHour: number;
+  pricePerDay: number;
+  pricePerMonth: number;
+  lengthInFeet: number;
+  widthInFeet: number;
+  totalBooking?: number;
+  address: string;
+  city: string;
+  state: string;
+  pin: number;
+  description: string | null;
+  ownerId: string | null;
+  createdAt: Date;
 }
 
 declare interface IBookedRoom {
-     id: string;
-     userId: string;
-     roomId: string | null;
-     name: string;
-     image: string;
-     price: number;
-     checkInTime: Date;
-     checkOutTime: Date;
-     ownerId: string | null;
-     status: "BOOKED" | "CANCEL" | "SUCCESS";
-     user: {
-      name: string,
-    }
+  id: string;
+  userId: string;
+  roomId: string | null;
+  name: string;
+  image: string;
+  price: number;
+  checkInTime: Date;
+  checkOutTime: Date;
+  ownerId: string | null;
+  status: "BOOKED" | "CANCEL" | "SUCCESS";
+  user: {
+    name: string;
+  };
 }
 
 declare interface UpdateStatusProps {
-     bookingId: string;
-     status: "BOOKED" | "CANCEL" | "SUCCESS";
+  bookingId: string;
+  status: "BOOKED" | "CANCEL" | "SUCCESS";
 }
 
 declare interface SearchParamsType {
-     page?: number;
-     search?: string;
+  page?: number;
+  search?: string;
 }

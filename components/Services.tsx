@@ -1,8 +1,8 @@
 "use client";
-import { services } from "@/config";
 import Image from "next/image";
-import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import { services } from "@/config";
+import { Button } from "./ui/button";
 import { InfiniteMovingCards } from "./ui/infinite-moving-card";
 
 export function Services() {
