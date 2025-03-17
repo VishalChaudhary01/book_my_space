@@ -1,38 +1,56 @@
-## Introduction
-Book_my_space is a room booking SAAS platform, It allows individuals to create an account and book rooms for personal or professional purposes on an hourly or daily basis. Additionally, room owners can list their spaces for rent by purchasing a suitable plan, making it easy to manage and monetize their properties.
+# 📌 Book_my_space | Full Stack Room Booking Platform
 
-## Installation
+- A comprehensive room booking platform enabling hourly and daily reservations.
+- Implemented secure payment processing using Stripe with 3-5% service fee integration.
+- Built authentication system using NextAuth ensuring secure user access.
+- Developed responsive UI using ShadcnUI, TailwindCSS and TypeScript.
+- Utilized PostgreSQL for efficient data management and relationships.
+- Technologies: Next.js, TypeScript, PostgreSQL, ShadcnUI, TailwindCSS, Stripe, NextAuth.
 
-Follow these steps to install and setup the project:
+## 🚀 Installation
 
-1. Clone the repository to your local machine using the following command:
+### 1️⃣ Clone the Repository
 
 ```bash
 git clone https://github.com/VishalChaudhary01/book_my_space
-```
-
-2. Navigate to the project directory:
-
-```bash
 cd book_my_space
 ```
 
-3. Install the required dependencies:
+## 📦 Setup using Docker (Recommended)
+
+### 2️⃣ Build and Run the Project
+
+```bash
+docker-compose -f docker-compose.dev.yml build --no-cache
+docker-compose -f docker-compose.dev.yml up
+```
+
+## 🔧 Setup Manually (Without Docker)
+
+### 2️⃣ Install Dependencies
 
 ```bash
 npm install
 ```
 
-4. Copy .env.example file to .env:
+### 3️⃣ Configure Environment Variables
+
+Copy the example environment file and configure it:
 
 ```bash
 cp .env.example .env
 ```
 
-5. Replace database url from your database url in .env file:
+Open .env and replace DATABASE_URL with your actual database connection string.
 
-6. Run the repo:
+### 4️⃣ Run the Application
+
 ```bash
 npm run dev
 ```
 
+## 🌍 Access the Application
+
+### Once the server is running, open your browser and go to:
+
+🔗 http://localhost:3000
