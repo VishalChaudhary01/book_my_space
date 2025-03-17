@@ -1,6 +1,6 @@
 "use server";
 import prisma from "@/lib/database";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
 import { signupSchema, SignupSchemaType } from "@/types/user";
 import { sendConfirmationEmail } from "@/lib/auth/sendConfirmationEmail";

@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "prisma": {
-    "schema": "./lib/database/prisma/schema.prisma",
+    "schema": "lib/database/prisma/schema.prisma",
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} ./lib/database/seed.ts"
   },
   "scripts": {
     "postinstall": "prisma generate",
+    "migrate": "npx prisma migrate dev",
+    "seed": "npx prisma db seed",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -28,7 +30,7 @@
     "@react-three/fiber": "^8.17.10",
     "@stripe/react-stripe-js": "^2.8.1",
     "@stripe/stripe-js": "^4.9.0",
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.0",
     "cloudinary": "^2.5.0",
     "clsx": "^2.1.1",
