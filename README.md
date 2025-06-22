@@ -7,6 +7,9 @@
 - Utilized PostgreSQL for efficient data management and relationships.
 - Technologies: Next.js, TypeScript, PostgreSQL, ShadcnUI, TailwindCSS, Stripe, NextAuth.
 
+
+### [Live Demo](https://book-my-space-rho.vercel.app/) | [Demo Video](https://www.loom.com/share/b1d10b0c005b4ea39fba5f865acc1774?sid=c4759b17-4607-4d5b-a084-eba10e1e2d5d)
+
 ## 🚀 Installation
 
 ### 1️⃣ Clone the Repository
